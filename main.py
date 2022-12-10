@@ -5,9 +5,15 @@ from keep_alive import keep_alive
 from discord.ext import commands
 
 reaction_chance = 100
+# dictionary of emotes and their ids
 emotes = {
   "presence" : "<:presence:941828627807490048>",
   "bl" : "<:bl:996875747346100354>"
+}
+# dictionary of what emotes to use to react to which messages
+keyword_reactions = {
+  "d20" : "presence",
+  "sneaks" : "bl"
 }
 
 bot = commands.Bot(
@@ -27,28 +33,25 @@ async def react_random(message: discord.Message):
     return
   # react to the message with a random guild emoji
   emoji = random.choice(message.guild.emojis)
+  print(f"Reacting to {message.author}: \"{message.content}\" with {emoji}")
   if emoji:
     await message.add_reaction(emoji)
 
-async def react_d20(message: discord.Message):
-  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes['presence']}")
-  # react with presence
-  if "d20" in message.content:
-    await message.add_reaction(emotes["presence"])
-
-async def react_sneaks(message: discord.Message):
-  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes['bl']}")
-  # react with bl
-  if "sneaks" in message.content:
-    await message.add_reaction(emotes["bl"])
+async def react_keywords(message: discord.Message):
+  # react to keywords
+  for keyword in keyword_reactions.keys():
+    # if the key is in the message
+    if keyword in message.content:
+      # react with the value of the key
+      print(f"Reacting to {message.author}: \"{message.content}\" with {emotes[keyword_reactions[keyword]]}")
+      await message.add_reaction(emotes[keyword_reactions[keyword]])
 
 @bot.event
 async def on_message(message: discord.Message):
   if message.author == bot.user:
     return
   await react_random(message)
-  await react_d20(message)
-  await react_sneaks(message)
+  await react_keywords(message)
 
 extensions = [
 	'cogs.cog_example'  # Same name as it would be if you were importing it
