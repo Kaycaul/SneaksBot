@@ -5,7 +5,7 @@ from keep_alive import keep_alive
 from discord.ext import commands
 
 class SneaksMemory:
-  last_four_messages: list[discord.Message] = []
+  last_four_messages = []
 
 memory = SneaksMemory()
 
@@ -68,7 +68,7 @@ async def chain_message(message: discord.Message):
       return
   # contribute to the spam
   print(f"Spamming {message.content}")
-  await message.channel.send(content=message.content, reference=random.choice(memory.last_four_messages))
+  await message.channel.send(content=message.content)
   # clear memory
   memory.last_four_messages = []
   
