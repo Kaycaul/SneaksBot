@@ -31,10 +31,14 @@ async def react_random(message: discord.Message):
   # randomly abort like 99% of the time
   if random.randint(0, reaction_chance) != 0:
     return
-  # react to the message with a random guild emoji
-  emoji = random.choice(message.guild.emojis)
-  print(f"Reacting to {message.author}: \"{message.content}\" with {emoji}")
+  if not isinstance(message.channel, discord.DMChannel):
+    # select a random guild emoji
+    emoji = random.choice(message.guild.emojis)
+  else:
+    emoji = emotes[random.choice(emotes.keys())]
+  # react with the emoji if you find it
   if emoji:
+    print(f"Reacting to {message.author}: \"{message.content}\" with {emoji}")
     await message.add_reaction(emoji)
 
 async def react_keywords(message: discord.Message):
