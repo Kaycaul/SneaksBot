@@ -6,14 +6,14 @@ from discord.ext import commands
 reaction_chance = 100
 
 bot = commands.Bot(
-	command_prefix="!",  # Change to desired prefix
-	case_insensitive=True  # Commands aren't case-sensitive
+	command_prefix="!", # Change to desired prefix
+	case_insensitive=True # Commands aren't case-sensitive
 )
 
-bot.author_id = 692583640538021908  # Change to your discord id!!!
+bot.author_id = 692583640538021908 # Change to your discord id!!!
 
 @bot.event 
-async def on_ready():  # When the bot is ready
+async def on_ready(): # When the bot is ready
     print(f"{bot.user} online") # Prints the bot's username and identifier
 
 @bot.event
@@ -34,8 +34,8 @@ extensions = [
 
 if __name__ == '__main__':  # Ensures this is the file being ran
 	for extension in extensions:
-		bot.load_extension(extension)  # Loades every extension.
+		bot.load_extension(extension) # Loads every extension.
 
 keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET") 
-bot.run(token)  # Starts the bot
+bot.run(token) # Starts the bot
