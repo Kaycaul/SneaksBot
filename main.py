@@ -4,7 +4,7 @@ import discord
 from keep_alive import keep_alive
 from discord.ext import commands
 
-reaction_chance = 100
+reaction_chance = 99
 # dictionary of emotes and their ids
 emotes = {
   "presence" : "<:presence:941828627807490048>",
