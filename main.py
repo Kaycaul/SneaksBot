@@ -5,7 +5,7 @@ from keep_alive import keep_alive
 from discord.ext import commands
 
 class SneaksMemory:
-  last_four_messages = []
+  last_four_messages: list[discord.Message] = []
 
 memory = SneaksMemory()
 
@@ -57,18 +57,18 @@ async def react_keywords(message: discord.Message):
 
 async def chain_message(message: discord.Message):
   # save the last 4 messages received
-  memory.last_four_messages.insert(0, message.content)
+  memory.last_four_messages.insert(0, message)
   if len(memory.last_four_messages) > 4:
     memory.last_four_messages.pop()
   else:
     return
   # check if memory is repetitve 
   for v in memory.last_four_messages[1:]:
-    if v != memory.last_four_messages[0]:
+    if v.content != memory.last_four_messages[0].content:
       return
   # contribute to the spam
   print(f"Spamming {message.content}")
-  await message.channel.send(content=message.content)
+  await message.channel.send(content=message.content, reference=random.choice(memory.last_four_messages))
   # clear memory
   memory.last_four_messages = []
   
