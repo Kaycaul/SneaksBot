@@ -1,12 +1,12 @@
 # sneaksbot lmao
 
-He is very cool and funny
+this is me messing around with making discord bots, he usually just interupts conversations
 
-# i know how to write a readme file now
-
-isnt this so cool
-
-# ok goobye now lol
+# sneaks is funny
 
 
+the funny guy
 
+
+
+lol
