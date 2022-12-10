@@ -68,7 +68,7 @@ async def chain_message(message: discord.Message):
       return
   # contribute to the spam
   print(f"Spamming {message.content}")
-  await message.channel.send(
+  await message.reply(
     content=message.content,
     reference=message.to_reference(),
     mention_author=True
