@@ -4,6 +4,11 @@ import discord
 from keep_alive import keep_alive
 from discord.ext import commands
 
+class SneaksMemory:
+  last_four_messages = []
+
+memory = SneaksMemory()
+
 reaction_chance = 99
 # dictionary of emotes and their ids
 emotes = {
@@ -50,12 +55,30 @@ async def react_keywords(message: discord.Message):
       print(f"Reacting to {message.author}: \"{message.content}\" with {emotes[keyword_reactions[keyword]]}")
       await message.add_reaction(emotes[keyword_reactions[keyword]])
 
+async def chain_message(message: discord.Message):
+  # save the last 4 messages received
+  memory.last_four_messages.insert(0, message.content)
+  if len(memory.last_four_messages) > 4:
+    memory.last_four_messages.pop()
+  else:
+    return
+  # check if memory is repetitve 
+  for v in memory.last_four_messages[1:]:
+    if v != memory.last_four_messages[0]:
+      return
+  # contribute to the spam
+  message.channel.send(message.content)
+  # clear memory
+  memory.last_four_messages = []
+  
+
 @bot.event
 async def on_message(message: discord.Message):
   if message.author == bot.user:
     return
   await react_random(message)
   await react_keywords(message)
+  await chain_message(message)
 
 extensions = [
 	'cogs.cog_example'  # Same name as it would be if you were importing it
