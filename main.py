@@ -31,13 +31,13 @@ async def react_random(message: discord.Message):
     await message.add_reaction(emoji)
 
 async def react_d20(message: discord.Message):
-  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes["presence"]}")
+  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes['presence']}")
   # react with presence
   if "d20" in message.content:
     await message.add_reaction(emotes["presence"])
 
 async def react_sneaks(message: discord.Message):
-  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes["bl"]}")
+  print(f"Reacting to {message.author}: \"{message.content}\" with {emotes['bl']}")
   # react with bl
   if "sneaks" in message.content:
     await message.add_reaction(emotes["bl"])
