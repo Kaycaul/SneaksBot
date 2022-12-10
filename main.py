@@ -1,5 +1,6 @@
 import os
 import random
+import discord
 from keep_alive import keep_alive
 from discord.ext import commands
 
@@ -16,10 +17,8 @@ bot.author_id = 692583640538021908 # Change to your discord id!!!
 async def on_ready(): # When the bot is ready
     print(f"{bot.user} online") # Prints the bot's username and identifier
 
-@bot.event
-async def on_message(message):
-  if message.author == bot.user:
-    return
+async def react_random(message: discord.Message):
+  # randomly abort like 99% of the time
   if random.randint(0, reaction_chance) != 0:
     return
   # react to the message with a random guild emoji
@@ -27,6 +26,16 @@ async def on_message(message):
   print(f"Reacting to {message.author}'s message with {emoji.name}")
   if emoji:
     await message.add_reaction(emoji)
+
+async def react_d20(message: discord.Message):
+  if " d20 " in message.content:
+    await message.add_reaction("<:presence:941828627807490048>")
+
+@bot.event
+async def on_message(message: discord.Message):
+  if message.author == bot.user:
+    return
+  react_random(message)
 
 extensions = [
 	'cogs.cog_example'  # Same name as it would be if you were importing it
