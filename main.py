@@ -50,12 +50,13 @@ async def react_keywords(message: discord.Message):
   # react to keywords
   for keyword in keyword_reactions.keys():
     # if the key is in the message
-    if keyword in message.content:
+    if keyword in message.content.lower():
       # react with the value of the key
       print(f"Reacting to {message.author}: \"{message.content}\" with {emotes[keyword_reactions[keyword]]}")
       await message.add_reaction(emotes[keyword_reactions[keyword]])
 
 async def chain_message(message: discord.Message):
+  print(f"Memory: {memory.last_four_messages}")
   # save the last 4 messages received
   memory.last_four_messages.insert(0, message.content)
   if len(memory.last_four_messages) > 4:
@@ -67,7 +68,12 @@ async def chain_message(message: discord.Message):
     if v != memory.last_four_messages[0]:
       return
   # contribute to the spam
-  message.channel.send(message.content)
+  print(f"Spamming {message.content}")
+  await message.channel.send(
+    content=message.content,
+    reference=message,
+    mention_author=True
+    )
   # clear memory
   memory.last_four_messages = []
   
