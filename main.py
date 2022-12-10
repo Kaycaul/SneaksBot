@@ -56,7 +56,6 @@ async def react_keywords(message: discord.Message):
       await message.add_reaction(emotes[keyword_reactions[keyword]])
 
 async def chain_message(message: discord.Message):
-  print(f"Memory: {memory.last_four_messages}")
   # save the last 4 messages received
   memory.last_four_messages.insert(0, message.content)
   if len(memory.last_four_messages) > 4:
@@ -71,7 +70,7 @@ async def chain_message(message: discord.Message):
   print(f"Spamming {message.content}")
   await message.channel.send(
     content=message.content,
-    reference=message,
+    reference=message.to_reference(),
     mention_author=True
     )
   # clear memory
