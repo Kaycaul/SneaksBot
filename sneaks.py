@@ -5,12 +5,14 @@ import time
 import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
+from discord.utils import get
 
 class Sneaks():
 
     # initial values
     doeball_uid = 692583640538021908
     cafe_guild_id = 923788487562493982
+    active_role_id = 1054661101029179453
     reaction_chance = 99
     days_before_inactive = 1 # the number of days until sneaks no longer considers a user "active"
     last_four_messages = []
@@ -55,7 +57,7 @@ class Sneaks():
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
-        active_users = []
+        active_users: list[discord.Member] = []
         guild = self.bot.get_guild(self.cafe_guild_id)
         for channel in guild.text_channels:
             try:
@@ -63,10 +65,12 @@ class Sneaks():
                     if not message.author.bot and message.author not in active_users:
                         active_users.append(message.author)
             except discord.errors.Forbidden:
-                print("Forbidden!")
-        # print the list
-        print("Active users:")
-        [print(user.name) for user in active_users]
+                print("Error accessing channel history: Forbidden") # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+        # clear the role, and reassign it
+        role: discord.Role = get(guild.roles, id=self.active_role_id)
+        [member.remove_roles(role) for member in role.members] # clear the role
+        [member.add_roles(role) for member in active_users]
+        # done!
         print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
         await asyncio.sleep(frequency)
 
