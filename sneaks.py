@@ -91,10 +91,13 @@ class Sneaks():
 
     async def update_status(self, frequency):
         while True:
+            # choose a new activity to play from the list
             new_activity_name = random.choice(activities_playing)
             print(f"Switching status to 'Playing {new_activity_name}'")
+            # update the presence
             await self.bot.change_presence(activity=discord.Game(new_activity_name))
-            await asyncio.wait(frequency)
+            # wait some amount of time before trying again
+            await asyncio.sleep(frequency)
     
     # on_message events
 
