@@ -1,3 +1,4 @@
+from dis import disco
 import os
 import random
 import discord
@@ -10,15 +11,24 @@ class SneaksMemory:
 memory = SneaksMemory()
 
 reaction_chance = 99
+greeting_reactions = ["bl", "gloghi", "boil", "hard", "matt", "sack"]
+
 # dictionary of emotes and their ids
 emotes = {
   "presence" : "<:presence:941828627807490048>",
-  "bl" : "<:bl:996875747346100354>"
+  "bl" : "<:bl:996875747346100354>",
+  "gloghi" : "<a:gloghi:1038322477161513021>",
+  "boil" : "<a:boil:1045540000600698980>",
+  "hard" : "<:hard:924072022777167912>",
+  "fuckyou" : "<a:fuckyou:1045005787451375687>",
+  "matt" : "<:matt:1031681843600293949>",
+  "sack" : "<:sack:924512985504960552>"
 }
+
 # dictionary of what emotes to use to react to which messages
 keyword_reactions = {
-  "d20" : "presence",
-  "sneaks" : "bl"
+  "d20" : ["presence", "fuckyou"],
+  "sneak" : greeting_reactions,
 }
 
 bot = commands.Bot(
@@ -52,8 +62,9 @@ async def react_keywords(message: discord.Message):
     # if the key is in the message
     if keyword in message.content.lower():
       # react with the value of the key
-      print(f"Reacting to {message.author}: \"{message.content}\" with {emotes[keyword_reactions[keyword]]}")
-      await message.add_reaction(emotes[keyword_reactions[keyword]])
+      value = random.choice(emotes[keyword_reactions[keyword]])
+      print(f"Reacting to {message.author}: \"{message.content}\" with {value}")
+      await message.add_reaction(value) 
 
 async def chain_message(message: discord.Message):
   # save the last 4 messages received
@@ -71,7 +82,11 @@ async def chain_message(message: discord.Message):
   await message.channel.send(content=message.content)
   # clear memory
   memory.last_four_messages = []
-  
+
+async def reply_ping(message: discord.Message):
+  if "<@1050873792525774921>" in message.content:
+    emote_response = emotes[random.choice(greeting_reactions)]
+    await message.channel.send(content=emote_response*random.randint(1,3))
 
 @bot.event
 async def on_message(message: discord.Message):
@@ -80,6 +95,7 @@ async def on_message(message: discord.Message):
   await react_random(message)
   await react_keywords(message)
   await chain_message(message)
+  await reply_ping(message)
 
 extensions = [
 	'cogs.cog_example'  # Same name as it would be if you were importing it
