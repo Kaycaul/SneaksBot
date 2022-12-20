@@ -6,8 +6,6 @@ import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 
-from types.channel import ChannelType, VoiceChannel
-
 class Sneaks():
 
     # initial values
