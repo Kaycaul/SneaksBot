@@ -58,9 +58,12 @@ class Sneaks():
         active_users = []
         guild = self.bot.get_guild(self.cafe_guild_id)
         for channel in guild.text_channels:
-            async for message in channel.history(before=before, after=after): # possibly very slow!!
-                if not message.author.bot and message.author not in active_users:
-                    active_users.append(message.author)
+            try:
+                async for message in channel.history(before=before, after=after): # possibly very slow!!
+                    if not message.author.bot and message.author not in active_users:
+                        active_users.append(message.author)
+            except discord.errors.Forbidden:
+                print("Forbidden!")
         # print the list
         print("Active users:")
         [print(user.name) for user in active_users]
