@@ -12,7 +12,7 @@ class SneaksMemory:
 memory = SneaksMemory()
 
 reaction_chance = 99
-update_frequency = 30 # delay in seconds between updates after on_ready
+update_frequency = 600 # delay in seconds between updates after on_ready
 greeting_reactions = ["bl", "boil", "hard", "matt", "sack"]
 
 # list of activities sneaks could be playing, randomly cycled through
@@ -95,7 +95,7 @@ async def on_ready(): # When the bot is ready
   # begin an infinite loop for continous tasks
   while True:
     await update_status()
-    asyncio.sleep(update_frequency)
+    await asyncio.sleep(update_frequency)
 
 # on_message events
 
