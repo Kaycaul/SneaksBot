@@ -1,7 +1,7 @@
-from dis import disco
 import os
 import random
 import discord
+print(f"running discord api {discord.__version__}")
 from keep_alive import keep_alive
 from discord.ext import commands
 
@@ -31,7 +31,12 @@ keyword_reactions = {
   "sneak" : greeting_reactions,
 }
 
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+intents.presences = True
 bot = commands.Bot(
+  intents=intents,
 	command_prefix="!", # Change to desired prefix
 	case_insensitive=True # Commands aren't case-sensitive
 )
