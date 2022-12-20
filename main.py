@@ -86,7 +86,7 @@ async def chain_message(message: discord.Message):
 async def reply_ping(message: discord.Message):
   if "<@1050873792525774921>" in message.content:
     emote_response = emotes[random.choice(greeting_reactions)]
-    await message.channel.send(content=emote_response*random.randint(1,3))
+    await message.reply(content=emote_response*random.randint(1,3))
 
 @bot.event
 async def on_message(message: discord.Message):
