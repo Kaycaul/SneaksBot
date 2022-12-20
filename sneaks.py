@@ -57,7 +57,7 @@ class Sneaks():
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
-        print("Searching for active users", end='')
+        print("Searching for active users", end='', flush=True)
         active_users: list[discord.Member] = []
         guild = self.bot.get_guild(self.cafe_guild_id)
         blocked_channels = 0
@@ -65,16 +65,22 @@ class Sneaks():
             try:
                 async for message in channel.history(before=before, after=after): # possibly very slow!!
                     if not message.author.bot and message.author not in active_users:
-                        print(".", end='')
+                        print(".", end='', flush=True)
                         active_users.append(message.author)
             except discord.errors.Forbidden:
                 blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
-        print(f"Found {len(active_users)} active users. Access denied to {blocked_channels} channels.")
+        print(f"\nFound {len(active_users)} active users. Access denied to {blocked_channels} channels.")
         # clear the role, and reassign it
         print("Assigning the role...")
         role: discord.Role = get(guild.roles, id=self.active_role_id)
-        [await member.remove_roles(role) for member in role.members] # clear the role
-        [await member.add_roles(role) for member in active_users]
+        # remove newly inactive members
+        for user in role.members:
+            if user not in active_users:
+                await user.remove_roles(role)
+        # add newly active members
+        for user in active_users:
+            if user not in role.members:
+                await user.add_roles(role)
         # done!
         print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
         await asyncio.sleep(frequency)
