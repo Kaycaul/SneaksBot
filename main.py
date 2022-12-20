@@ -11,13 +11,13 @@ class SneaksMemory:
 memory = SneaksMemory()
 
 reaction_chance = 99
-greeting_reactions = ["bl", "gloghi", "boil", "hard", "matt", "sack"]
+greeting_reactions = ["bl", "boil", "hard", "matt", "sack"]
 
 # dictionary of emotes and their ids
 emotes = {
   "presence" : "<:presence:941828627807490048>",
   "bl" : "<:bl:996875747346100354>",
-  "gloghi" : "<a:gloghi:1038322477161513021>",
+  # "gloghi" : "<a:gloghi:1038322477161513021>", # average californian hangout emote
   "boil" : "<a:boil:1045540000600698980>",
   "hard" : "<:hard:924072022777167912>",
   "fuckyou" : "<a:fuckyou:1045005787451375687>",
@@ -62,7 +62,7 @@ async def react_keywords(message: discord.Message):
     # if the key is in the message
     if keyword in message.content.lower():
       # react with the value of the key
-      value = random.choice(emotes[keyword_reactions[keyword]])
+      value = emotes[random.choice(keyword_reactions[keyword])]
       print(f"Reacting to {message.author}: \"{message.content}\" with {value}")
       await message.add_reaction(value) 
 
