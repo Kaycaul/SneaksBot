@@ -58,7 +58,7 @@ class Sneaks():
             return
         # track the time (for logging of course)
         start_time = time.time()
-        print("Updating active role!")
+        print("Updating the active role!")
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
