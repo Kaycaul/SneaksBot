@@ -51,26 +51,33 @@ class Sneaks():
     # on_message events
 
     async def update_active_role(self, frequency):
+
+        guild = self.bot.get_guild(self.cafe_guild_id)
         start_time = time.time()
         print("Updating active role!")
+
+        # iterates over every message in a time range
+        async def get_active_users(self: Sneaks) -> list[discord.Member]:
+            print("Searching for active users", end='', flush=True)
+            active_users: list[discord.Member] = []
+            blocked_channels = 0
+            for channel in guild.text_channels:
+                try:
+                    async for message in channel.history(before=before, after=after): # possibly very slow!!
+                        if not message.author.bot and message.author not in active_users:
+                            print(".", end='', flush=True)
+                            active_users.append(message.author)
+                except discord.errors.Forbidden:
+                    blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+            print(f"\nFound {len(active_users)} active users. Access denied to {blocked_channels} channels.")
+            return active_users
+        
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
-        print("Searching for active users", end='', flush=True)
-        active_users: list[discord.Member] = []
-        guild = self.bot.get_guild(self.cafe_guild_id)
-        blocked_channels = 0
-        for channel in guild.text_channels:
-            try:
-                async for message in channel.history(before=before, after=after): # possibly very slow!!
-                    if not message.author.bot and message.author not in active_users:
-                        print(".", end='', flush=True)
-                        active_users.append(message.author)
-            except discord.errors.Forbidden:
-                blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
-        print(f"\nFound {len(active_users)} active users. Access denied to {blocked_channels} channels.")
-        # clear the role, and reassign it
+        active_users = get_active_users(self)
+        # update the role
         print("Assigning the role", end='')
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
