@@ -1,6 +1,8 @@
 import random
 import discord
 import asyncio
+import time
+import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 
@@ -8,7 +10,9 @@ class Sneaks():
 
     # initial values
     doeball_uid = 692583640538021908
+    cafe_guild_id = 923788487562493982
     reaction_chance = 99
+    days_before_inactive = 1 # the number of days until sneaks no longer considers a user "active"
     last_four_messages = []
     # config and configs
     config = SneaksConfiguration()
@@ -43,6 +47,25 @@ class Sneaks():
             await asyncio.sleep(frequency)
     
     # on_message events
+
+    async def update_active_role(self, frequency):
+        start_time = time.time()
+        print("Updating active role!")
+        # compute the range of dates to scan
+        before = datetime.datetime.today()
+        after = before - datetime.timedelta(days=self.days_before_inactive)
+        # scan every channel and every message in those channels. note each user found.
+        active_users = []
+        guild = self.bot.get_guild(self.cafe_guild_id)
+        for channel in guild.channels:
+            async for message in channel.history(before=before, after=after): # possibly very slow!!
+                if not message.author.bot and message.author not in active_users:
+                    active_users.append(message.author)
+        # print the list
+        print("Active users:")
+        [print(user.name) for user in active_users]
+        print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
+        await asyncio.sleep(frequency)
 
     async def react_random(self, message: discord.Message):
         # randomly abort like 99% of the time
