@@ -77,10 +77,12 @@ class Sneaks():
         for user in role.members:
             if user not in active_users:
                 await user.remove_roles(role)
+                print(f"Removed active role from {user.name}")
         # add newly active members
         for user in active_users:
             if user not in role.members:
                 await user.add_roles(role)
+                print(f"Assigned active role to {user.name}")
         # done!
         print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
         await asyncio.sleep(frequency)
