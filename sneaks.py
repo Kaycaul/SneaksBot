@@ -52,7 +52,7 @@ class Sneaks():
 
     async def update_active_role(self, frequency):
         start_time = time.time()
-        print("Updating active role...")
+        print("Updating active role!")
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
@@ -71,20 +71,22 @@ class Sneaks():
                 blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
         print(f"\nFound {len(active_users)} active users. Access denied to {blocked_channels} channels.")
         # clear the role, and reassign it
-        print("Assigning the role...")
+        print("Assigning the role", end='')
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
         for user in role.members:
             if user not in active_users:
                 await user.remove_roles(role)
-                print(f"Removed active role from {user.name}")
+                print(f"Removed active role from {user.name}\n")
+            print(".", end='', flush=True)
         # add newly active members
         for user in active_users:
             if user not in role.members:
                 await user.add_roles(role)
-                print(f"Assigned active role to {user.name}")
+                print(f"Assigned active role to {user.name}\n")
+            print(".", end='', flush=True)
         # done!
-        print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
+        print(f"\nDone updating active role! Time elapsed: {time.time() - start_time}s")
         await asyncio.sleep(frequency)
 
     async def react_random(self, message: discord.Message):
