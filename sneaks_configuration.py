@@ -62,4 +62,5 @@ class SneaksConfiguration:
     keyword_reactions = {
         "d20" : ["presence", "fuckyou"],
         "sneak" : greeting_reactions,
+        "snuck" : greeting_reactions
     }
