@@ -68,8 +68,8 @@ class Sneaks():
                 print("Error accessing channel history: Forbidden") # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
         # clear the role, and reassign it
         role: discord.Role = get(guild.roles, id=self.active_role_id)
-        [member.remove_roles(role) for member in role.members] # clear the role
-        [member.add_roles(role) for member in active_users]
+        [await member.remove_roles(role) for member in role.members] # clear the role
+        [await member.add_roles(role) for member in active_users]
         # done!
         print(f"Done updating active role! Time elapsed: {time.time() - start_time}s")
         await asyncio.sleep(frequency)
