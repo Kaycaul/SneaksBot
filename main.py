@@ -92,7 +92,7 @@ async def on_ready(): # When the bot is ready
   print(f"{bot.user} online") # Prints the bot's username and identifier
   # begin an infinite loop for continous tasks
   while True:
-    update_status()
+    await update_status()
     asyncio.sleep(update_frequency)
 
 # on_message events
