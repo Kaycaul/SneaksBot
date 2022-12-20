@@ -14,7 +14,7 @@ class Sneaks():
     cafe_guild_id = 923788487562493982
     active_role_id = 1054661101029179453
     reaction_chance = 99
-    days_before_inactive = 1 # the number of days until sneaks no longer considers a user "active"
+    days_before_inactive = 0.1 # the number of days until sneaks no longer considers a user "active"
     last_four_messages = []
     # config and configs
     config = SneaksConfiguration()
@@ -36,22 +36,25 @@ class Sneaks():
     # configuring the bot
     bot.author_id = doeball_uid
 
-    # on_ready events, occur as loops
+    # on_ready events, occur inside a loop
 
     async def update_status(self, frequency):
-        while True:
-            # choose a new activity to play from the list
-            new_activity_name = random.choice(self.activities_playing)
-            print(f"Switching status to 'Playing {new_activity_name}'")
-            # update the presence
-            await self.bot.change_presence(activity=discord.Game(new_activity_name))
-            # wait some amount of time before trying again
-            await asyncio.sleep(frequency)
-    
-    # on_message events
+        # return if too early
+        if time.time() - self.update_status_timestamp < frequency:
+            return
+        # choose a new activity to play from the list
+        new_activity_name = random.choice(self.activities_playing)
+        print(f"Switching status to 'Playing {new_activity_name}'")
+        # update the presence
+        await self.bot.change_presence(activity=discord.Game(new_activity_name))
+        # save the time
+        self.update_status_timestamp = time.time()
 
     async def update_active_role(self, frequency):
-        
+        # return if too early
+        if time.time() - self.update_active_role_timestamp < frequency:
+            return
+        # track the time (for logging of course)
         start_time = time.time()
         print("Updating active role!")
         # compute the range of dates to scan
@@ -88,7 +91,9 @@ class Sneaks():
             print(".", end='', flush=True)
         # done!
         print(f"\nDone updating active role! Time elapsed: {time.time() - start_time}s")
-        await asyncio.sleep(frequency)
+        self.update_active_role_timestamp = time.time()
+
+    # on_message events
 
     async def react_random(self, message: discord.Message):
         # randomly abort like 99% of the time
