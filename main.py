@@ -10,7 +10,7 @@ bot = sneaksbot.bot
 
 @bot.event
 async def on_ready():  # When the bot is ready
-    print(f"{bot.user} online")  # Prints the bot's username and identifier
+    print(f"{bot.user} online\nLoggers!!")  # Prints the bot's username and identifier
     # begin all the infinitely looping coroutines
     await sneaksbot.update_status(600) # this will recur every 10 minutes
 
