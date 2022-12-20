@@ -57,7 +57,7 @@ class Sneaks():
         print("Updating active role!")
 
         # iterates over every message in a time range
-        async def get_active_users(self: Sneaks) -> list[discord.Member]:
+        async def get_active_users(self: Sneaks):
             print("Searching for active users", end='', flush=True)
             active_users: list[discord.Member] = []
             blocked_channels = 0
