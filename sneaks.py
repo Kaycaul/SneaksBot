@@ -15,6 +15,8 @@ class Sneaks():
     active_role_id = 1054661101029179453
     reaction_chance = 99
     days_before_inactive = 0.1 # the number of days until sneaks no longer considers a user "active"
+    update_status_timestamp = 0
+    update_active_role_timestamp = 0
     last_four_messages = []
     # config and configs
     config = SneaksConfiguration()
