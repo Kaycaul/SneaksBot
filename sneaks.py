@@ -77,13 +77,13 @@ class Sneaks():
         for user in role.members:
             if user not in active_users:
                 await user.remove_roles(role)
-                print(f"Removed active role from {user.name}\n")
+                print(f"\nRemoved active role from {user.name}")
             print(".", end='', flush=True)
         # add newly active members
         for user in active_users:
             if user not in role.members:
                 await user.add_roles(role)
-                print(f"Assigned active role to {user.name}\n")
+                print(f"\nAssigned active role to {user.name}")
             print(".", end='', flush=True)
         # done!
         print(f"\nDone updating active role! Time elapsed: {time.time() - start_time}s")
