@@ -85,7 +85,9 @@ bot.author_id = 692583640538021908 # Change to your discord id!!!
 # on_ready events
 
 async def update_status():
-  await bot.change_presence(discord.Game(random.choice(activities_playing)))
+  new_activity_name = random.choice(activities_playing)
+  print(f"Switching status to 'Playing {new_activity_name}'")
+  await bot.change_presence(activity=discord.Game(new_activity_name))
 
 @bot.event 
 async def on_ready(): # When the bot is ready
