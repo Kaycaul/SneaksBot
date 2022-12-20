@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 import discord
@@ -11,7 +12,45 @@ class SneaksMemory:
 memory = SneaksMemory()
 
 reaction_chance = 99
+update_frequency = 30 # delay in seconds between updates after on_ready
 greeting_reactions = ["bl", "boil", "hard", "matt", "sack"]
+
+# list of activities sneaks could be playing, randomly cycled through
+activities_playing = [
+  "Factorio",
+  "Nier Automata",
+  "Liquid Skies Zero",
+  "with Discord API",
+  "Minecraft",
+  "Team Fortress Two",
+  "plr_hightower",
+  "ctf_2fort",
+  "Garry's Mod",
+  "Half-Life 2",
+  "gm_construct",
+  "Satisfactory",
+  "Beat Saber",
+  "Receiver 2",
+  "Heat Signature",
+  "OpenTTD",
+  "Opus Magnum",
+  "Krunker",
+  "The Witness",
+  "Baba Is You",
+  "Portal 2",
+  "OneShot",
+  "Celeste",
+  "Spacechem",
+  "Terraria",
+  "Lego Star Wars",
+  "Visual Studio Code",
+  "Godot",
+  "Github",
+  "Replit",
+  "Unity Editor",
+  "Scratch",
+  "Krita"
+]
 
 # dictionary of emotes and their ids
 emotes = {
@@ -43,9 +82,20 @@ bot = commands.Bot(
 
 bot.author_id = 692583640538021908 # Change to your discord id!!!
 
+# on_ready events
+
+async def update_status():
+  await bot.change_presence(discord.Game(random.choice(activities_playing)))
+
 @bot.event 
 async def on_ready(): # When the bot is ready
-    print(f"{bot.user} online") # Prints the bot's username and identifier
+  print(f"{bot.user} online") # Prints the bot's username and identifier
+  # begin an infinite loop for continous tasks
+  while True:
+    update_status()
+    asyncio.sleep(update_frequency)
+
+# on_message events
 
 async def react_random(message: discord.Message):
   # randomly abort like 99% of the time
