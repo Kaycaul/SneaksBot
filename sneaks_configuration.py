@@ -55,12 +55,14 @@ class SneaksConfiguration:
         "hard" : "<:hard:924072022777167912>",
         "fuckyou" : "<a:fuckyou:1045005787451375687>",
         "matt" : "<:matt:1031681843600293949>",
-        "sack" : "<:sack:924512985504960552>"
+        "sack" : "<:sack:924512985504960552>",
+        "resentment" : "<:resentment:924072022160584704>",
+        "okay" : "<:okay:936301680746700810>"
     }
 
     # dictionary of what emotes to use to react to which messages
     keyword_reactions = {
-        "d20" : ["presence", "fuckyou"],
+        "d20" : ["presence", "fuckyou", "resentment", "okay"],
         "sneak" : greeting_reactions,
         "snuck" : greeting_reactions
     }
