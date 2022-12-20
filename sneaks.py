@@ -46,7 +46,7 @@ class Sneaks():
 
     async def react_random(self, message: discord.Message):
         # randomly abort like 99% of the time
-        if random.randint(0, self.config.reaction_chance) != 0:
+        if random.randint(0, self.reaction_chance) != 0:
             return
         if not isinstance(message.channel, discord.DMChannel):
             # select a random guild emoji
