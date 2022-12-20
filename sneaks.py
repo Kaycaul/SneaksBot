@@ -54,13 +54,14 @@ class Sneaks():
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
-        # scan every channel and every message in those channels. note each user found.
+        # scan every channel and every message in those channels and note each user found
         active_users = []
         guild = self.bot.get_guild(self.cafe_guild_id)
-        for channel in guild.channels:
-            async for message in channel.history(before=before, after=after): # possibly very slow!!
-                if not message.author.bot and message.author not in active_users:
-                    active_users.append(message.author)
+        for category in guild.channels:
+            for channel in category.text_channels:
+                async for message in channel.history(before=before, after=after): # possibly very slow!!
+                    if not message.author.bot and message.author not in active_users:
+                        active_users.append(message.author)
         # print the list
         print("Active users:")
         [print(user.name) for user in active_users]
