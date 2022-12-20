@@ -112,7 +112,7 @@ class Sneaks():
         await message.add_reaction(emoji)
         # if it is a good status, set it as your status too
         if 21 > len(message.content) > 2:
-            await self.bot.change_presence(message.content) # use it as your status for now, it will be updated in like 10 minutes
+            await self.bot.change_presence(activity=discord.Game(message.content)) # use it as your status for now, it will be updated in like 10 minutes
 
     async def react_keywords(self, message: discord.Message):
         # react to keywords
