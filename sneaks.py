@@ -52,21 +52,26 @@ class Sneaks():
 
     async def update_active_role(self, frequency):
         start_time = time.time()
-        print("Updating active role!")
+        print("Updating active role...")
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
+        print("Searching for active users", end='')
         active_users: list[discord.Member] = []
         guild = self.bot.get_guild(self.cafe_guild_id)
+        blocked_channels = 0
         for channel in guild.text_channels:
             try:
                 async for message in channel.history(before=before, after=after): # possibly very slow!!
                     if not message.author.bot and message.author not in active_users:
+                        print(".", end='')
                         active_users.append(message.author)
             except discord.errors.Forbidden:
-                print("Error accessing channel history: Forbidden") # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+                blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+        print(f"Found {len(active_users)} active users. Access denied to {blocked_channels} channels.")
         # clear the role, and reassign it
+        print("Assigning the role...")
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         [await member.remove_roles(role) for member in role.members] # clear the role
         [await member.add_roles(role) for member in active_users]
