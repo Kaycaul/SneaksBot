@@ -6,6 +6,8 @@ import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 
+from types.channel import ChannelType, VoiceChannel
+
 class Sneaks():
 
     # initial values
@@ -57,11 +59,10 @@ class Sneaks():
         # scan every channel and every message in those channels and note each user found
         active_users = []
         guild = self.bot.get_guild(self.cafe_guild_id)
-        for category in guild.channels:
-            for channel in category.text_channels:
-                async for message in channel.history(before=before, after=after): # possibly very slow!!
-                    if not message.author.bot and message.author not in active_users:
-                        active_users.append(message.author)
+        for channel in guild.text_channels:
+            async for message in channel.history(before=before, after=after): # possibly very slow!!
+                if not message.author.bot and message.author not in active_users:
+                    active_users.append(message.author)
         # print the list
         print("Active users:")
         [print(user.name) for user in active_users]
