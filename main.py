@@ -1,5 +1,6 @@
 import os
 import discord
+import asyncio
 from keep_alive import keep_alive
 from sneaks import Sneaks
 print(f"running discord api {discord.__version__}")
@@ -11,10 +12,11 @@ bot = sneaksbot.bot
 @bot.event
 async def on_ready():  # When the bot is ready
     print(f"{bot.user} online\nLoggers!!")  # Prints the bot's username and identifier 
-    # begin all the infinitely looping coroutines
+    # begin all the infinitely looping coroutines, execute them once per second
     while True:
-        await sneaksbot.update_active_role(30)
-        await sneaksbot.update_status(5) # this will recur every 10 minutes
+        await sneaksbot.update_active_role(3600) # this will recur every hour
+        await sneaksbot.update_status(600) # this will recur every 10 minutes
+        await asyncio.sleep(1)
 
 
 @bot.event

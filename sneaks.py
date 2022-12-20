@@ -1,6 +1,5 @@
 import random
 import discord
-import asyncio
 import time
 import datetime
 from sneaks_configuration import SneaksConfiguration
@@ -14,7 +13,7 @@ class Sneaks():
     cafe_guild_id = 923788487562493982
     active_role_id = 1054661101029179453
     reaction_chance = 99
-    days_before_inactive = 0.1 # the number of days until sneaks no longer considers a user "active"
+    days_before_inactive = 7 # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
     last_four_messages = []
@@ -81,13 +80,13 @@ class Sneaks():
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
         for user in role.members:
-            if user not in active_users:
+            if user not in active_users and user in guild.members:
                 await user.remove_roles(role)
                 print(f"\nRemoved active role from {user.name}", end='')
             print(".", end='', flush=True)
         # add newly active members
         for user in active_users:
-            if user not in role.members:
+            if user not in role.members and user in guild.members:
                 await user.add_roles(role)
                 print(f"\nAssigned active role to {user.name}", end='')
             print(".", end='', flush=True)
