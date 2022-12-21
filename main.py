@@ -11,7 +11,7 @@ bot = sneaksbot.bot
 
 @bot.event
 async def on_ready():  # When the bot is ready
-    print(f"{bot.user} online\nLoggers!!")  # Prints the bot's username and identifier 
+    print(f"\033[1;93m {bot.user} online\nLoggers!!")  # Prints the bot's username and identifier 
     await sneaksbot.update_known_emotes()
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
