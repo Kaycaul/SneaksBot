@@ -163,5 +163,10 @@ class Sneaks():
         if not "spam me with every emote you know please" in message.content.lower():
             return
         # print every known message
+        message_to_send = ""
         for emote in self.all_known_emotes:
-            await message.reply(content=emote)
+            message_to_send += emote
+            if len(message_to_send) > 1000:
+                await message.reply(content=message_to_send)
+                message_to_send = ""
+        await message.reply(content=message_to_send)
