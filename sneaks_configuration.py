@@ -44,6 +44,7 @@ class SneaksConfiguration:
         "Jackbox Party Pack 7",
         "Bloons TD6",
         "with a ball of yarn",
+        "Genshin Impact"
     ]
 
     # dictionary of emotes and their ids
