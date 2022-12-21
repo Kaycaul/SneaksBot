@@ -11,7 +11,7 @@ bot = sneaksbot.bot
 
 @bot.event
 async def on_ready():  # When the bot is ready
-    print(f"{bot.user} online\nLoggers!!")  # Prints the bot's username and identifier 
+    print(f"\033[1;93m{bot.user} online\nLoggers!!")  # Prints the bot's username and identifier 
     await sneaksbot.update_known_emotes()
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
@@ -29,14 +29,6 @@ async def on_message(message: discord.Message):
     await sneaksbot.chain_message(message)
     await sneaksbot.reply_ping(message)
     await sneaksbot.emote_dump(message) # this was a mistake
-
-extensions = [
-    'cogs.cog_example'  # Same name as it would be if you were importing it
-]
-
-if __name__ == '__main__':  # Ensures this is the file being ran
-    for extension in extensions:
-        bot.load_extension(extension)  # Loads every extension.
 
 keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET")
