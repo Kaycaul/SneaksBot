@@ -1,3 +1,4 @@
+from dis import disco
 import random
 import discord
 import time
@@ -49,7 +50,7 @@ class Sneaks():
                 if emote in self.all_known_emotes:
                     continue
                 # add the new emote to the list
-                self.all_known_emotes += emote
+                self.all_known_emotes += str(emote)
         # add emoji that are known
         self.all_known_emotes += self.config.emoji_whitelist
         print(f"Collected emotes: {self.all_known_emotes}")
