@@ -28,7 +28,7 @@ async def on_message(message: discord.Message):
     await sneaksbot.react_keywords(message)
     await sneaksbot.chain_message(message)
     await sneaksbot.reply_ping(message)
-    await sneaksbot.emote_dump()
+    await sneaksbot.emote_dump(message)
 
 extensions = [
     'cogs.cog_example'  # Same name as it would be if you were importing it
