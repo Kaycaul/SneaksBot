@@ -67,7 +67,7 @@ class SneaksConfiguration:
         "👎",
         "🤓",
         "\U0001FAF5", # pointing at viewer
-        "<:🧱:>",
+        "🧱",
         "🇨🇦",
         "🏳‍🌈",
         "🏳️‍⚧️"
