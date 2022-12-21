@@ -1,5 +1,5 @@
 class SneaksConfiguration:
-    greeting_reactions = ["bl", "boil", "hard", "matt", "sack"]
+    greeting_reactions = ["bl", "boil", "hard", "matt", "sack", "gloglet"]
 
     # list of activities sneaks could be playing, randomly cycled through
     activities_playing = [
@@ -47,18 +47,52 @@ class SneaksConfiguration:
         "Genshin Impact"
     ]
 
+    # sneaks should not be able to use these emotes
+    emote_blacklist = [
+        # i thought it could potentially result in awkward rather than funny reactions if these were included lol
+        "<a:petpat_Tiran:1032305183461486622>", 
+        "<a:petpat_Techy:1003543375120695296>",
+        "<a:petpat_Myri:1014733264822489098>",
+        "<a:chromapet:1004604447781036082>",
+        # the trophy emotes arent very funny and usually just dont make sense
+        "<:trophy_concept:991050295490514954>",
+        "<:trophy_cool:991050294467121172>",
+        "<:trophy_cute:991050293401772102>",
+        "<:trophy_effort:991050296526516275>",
+        "<:trophy_funny:969750249721720882>"
+    ]
+
+    # sneaks should be able to use only these stock emoji
+    emoji_whitelist = [
+        "🚫",
+        "❌",
+        "💕",
+        "™",
+        "⭐",
+        "🍔",
+        "👍",
+        "👎",
+        "🤓",
+        "\U0001FAF5", # pointing at viewer
+        "🧱",
+        "🇨🇦",
+        "\U0001f3f3\uFE0F\u200D\U0001f308",
+        "🏳️‍⚧️"
+
+    ]
+
     # dictionary of emotes and their ids
     emotes = {
         "presence" : "<:presence:941828627807490048>",
         "bl" : "<:bl:996875747346100354>",
-        # "gloghi" : "<a:gloghi:1038322477161513021>", # average californian hangout emote
         "boil" : "<a:boil:1045540000600698980>",
         "hard" : "<:hard:924072022777167912>",
         "fuckyou" : "<a:fuckyou:1045005787451375687>",
         "matt" : "<:matt:1031681843600293949>",
         "sack" : "<:sack:924512985504960552>",
         "resentment" : "<:resentment:924072022160584704>",
-        "okay" : "<:okay:936301680746700810>"
+        "okay" : "<:okay:936301680746700810>",
+        "gloglet" : "<a:gloglet:1040418817119092806>"
     }
 
     # dictionary of what emotes to use to react to which messages
