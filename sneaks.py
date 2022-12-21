@@ -115,7 +115,7 @@ class Sneaks():
 
     async def react_random(self, message: discord.Message):
         # randomly abort like 99% of the time
-        if random.randint(0, self.reaction_chance) != 0 and not message.content == "random reaction":
+        if random.randint(0, self.reaction_chance) != 0:
             return
         # react with a random known emote
         emote = random.choice(self.all_known_emotes)
@@ -157,3 +157,11 @@ class Sneaks():
         if "<@1050873792525774921>" in message.content:
             emote_response = self.emotes[random.choice(self.greeting_reactions)]
             await message.reply(content=emote_response*random.randint(1,3))
+
+    # prints every emote, mostly for testing but also probably funny
+    async def emote_dump(self, message: discord.Message):
+        if not "spam me with every emote you know please" in message.content.lower():
+            return
+        # print every known message
+        for emote in self.all_known_emotes:
+            await message.reply(content=emote)
