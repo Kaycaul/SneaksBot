@@ -30,14 +30,6 @@ async def on_message(message: discord.Message):
     await sneaksbot.reply_ping(message)
     await sneaksbot.emote_dump(message) # this was a mistake
 
-extensions = [
-    'cogs.cog_example'  # Same name as it would be if you were importing it
-]
-
-if __name__ == '__main__':  # Ensures this is the file being ran
-    for extension in extensions:
-        bot.load_extension(extension)  # Loads every extension.
-
 keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET")
 bot.run(token)  # Starts the bot
