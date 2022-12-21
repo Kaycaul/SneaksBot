@@ -43,13 +43,13 @@ class Sneaks():
     async def update_known_emotes(self):
         # collect all emotes from every guild
         for guild in self.bot.guilds:
-            for emote in guild.emojis:
+            for emote in [str(e) for e in guild.emojis]:
                 if emote in self.config.emote_blacklist:
                     continue
                 if emote in self.all_known_emotes:
                     continue
                 # add the new emote to the list
-                self.all_known_emotes.append(str(emote))
+                self.all_known_emotes.append(emote)
         # add emoji that are known
         self.all_known_emotes += self.config.emoji_whitelist
         print(f"Collected emotes: {self.all_known_emotes}")
