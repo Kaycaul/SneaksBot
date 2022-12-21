@@ -17,6 +17,7 @@ class Sneaks():
     update_status_timestamp = 0
     update_active_role_timestamp = 0
     last_four_messages = []
+    all_known_emotes = [] # this will contain every emote and emoji sneaks has access to
     # config and configs
     config = SneaksConfiguration()
     activities_playing = config.activities_playing
@@ -36,6 +37,22 @@ class Sneaks():
     )
     # configuring the bot
     bot.author_id = doeball_uid
+
+    # on ready events, occur outside a loop (only once)
+
+    async def update_known_emotes(self):
+        # collect all emotes from every guild
+        for guild in self.bot.guilds:
+            for emote in guild.emojis:
+                if emote in self.config.emote_blacklist:
+                    continue
+                if emote in self.all_known_emotes:
+                    continue
+                # add the new emote to the list
+                self.all_known_emotes += emote
+        # add emoji that are known
+        self.all_known_emotes += self.config.emoji_whitelist
+        print(f"Collected emotes: {self.all_known_emotes}")
 
     # on_ready events, occur inside a loop
 
@@ -98,18 +115,12 @@ class Sneaks():
 
     async def react_random(self, message: discord.Message):
         # randomly abort like 99% of the time
-        if random.randint(0, self.reaction_chance) != 0:
+        if random.randint(0, self.reaction_chance) != 0 and not message.content == "random reaction":
             return
-        if not isinstance(message.channel, discord.DMChannel):
-            # select a random guild emoji
-            emoji = random.choice(message.guild.emojis)
-        else:
-            emoji = self.emotes[random.choice(self.emotes.keys())]
-        # react with the emoji if you find it
-        if not emoji:
-            return
-        print(f"Reacting to {message.author}: \"{message.content}\" with {emoji}")
-        await message.add_reaction(emoji)
+        # react with a random known emote
+        emote = random.choice(self.all_known_emotes)
+        print(f"Reacting to {message.author}: \"{message.content}\" with {emote}")
+        await message.add_reaction(emote)
         # if it is a good status, set it as your status too
         if 21 > len(message.content) > 2:
             print(f"Stealing \"{message.content}\" as a status")
