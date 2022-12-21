@@ -52,7 +52,13 @@ class SneaksConfiguration:
         "<a:petpat_Tiran:1032305183461486622>", 
         "<a:petpat_Techy:1003543375120695296>",
         "<a:petpat_Myri:1014733264822489098>",
-        "<a:chromapet:1004604447781036082>"
+        "<a:chromapet:1004604447781036082>",
+        # the trophy emotes arent very funny and usually just dont make sense
+        "<:trophy_concept:991050295490514954>",
+        "<:trophy_cool:991050294467121172>",
+        "<:trophy_cute:991050293401772102>",
+        "<:trophy_effort:991050296526516275>",
+        "<:trophy_funny:969750249721720882>"
     ]
 
     # sneaks should be able to use only these stock emoji
@@ -69,7 +75,7 @@ class SneaksConfiguration:
         "\U0001FAF5", # pointing at viewer
         "🧱",
         "🇨🇦",
-        "🏳‍🌈",
+        "\U0001f3f3\uFE0F\u200D\U0001f308",
         "🏳️‍⚧️"
 
     ]
