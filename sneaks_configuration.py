@@ -57,21 +57,21 @@ class SneaksConfiguration:
 
     # sneaks should be able to use only these stock emoji
     emoji_whitelist = [
-        ":no_entry_sign:",
-        ":x:",
-        ":two_hearts",
-        ":tm:",
-        ":star:",
-        ":hamburger:",
-        ":thumbsup:",
-        ":thumbsdown:",
-        ":index_pointing_at_the_viewer:",
-        ":nerd:",
-        ":face_with_raised_eyebrow:",
-        ":bricks:",
-        ":flag_ca:",
-        ":rainbow_flag:",
-        ":transgender_flag:"
+        "<:no_entry_sign:>",
+        "<:x:>",
+        "<:two_hearts:>",
+        "<:tm:>",
+        "<:star:>",
+        "<:hamburger:>",
+        "<:thumbsup:>",
+        "<:thumbsdown:>",
+        "<:index_pointing_at_the_viewer:>",
+        "<:nerd:>",
+        "<:face_with_raised_eyebrow:>",
+        "<:bricks:>",
+        "<:flag_ca:>",
+        "<:rainbow_flag:>",
+        "<:transgender_flag:>"
 
     ]
 
