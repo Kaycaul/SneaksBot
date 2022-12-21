@@ -52,7 +52,7 @@ class Sneaks():
                 self.all_known_emotes.append(emote)
         # add emoji that are known
         self.all_known_emotes += self.config.emoji_whitelist
-        print(f"Collected emotes: {self.all_known_emotes}")
+        print(f"\033[1;32m Collected emotes: {self.all_known_emotes}")
 
     # on_ready events, occur inside a loop
 
@@ -62,7 +62,7 @@ class Sneaks():
             return
         # choose a new activity to play from the list
         new_activity_name = random.choice(self.activities_playing)
-        print(f"Switching status to 'Playing {new_activity_name}'")
+        print(f"\033[1;32m Switching status to 'Playing {new_activity_name}'")
         # update the presence
         await self.bot.change_presence(activity=discord.Game(new_activity_name))
         # save the time
@@ -74,12 +74,12 @@ class Sneaks():
             return
         # track the time (for logging of course)
         start_time = time.time()
-        print("Updating the active role!")
+        print("\033[1;35m Updating the active role!")
         # compute the range of dates to scan
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
-        print("Searching for active users", end='', flush=True)
+        print("\033[1;35m Searching for active users", end='', flush=True)
         active_users: list[discord.Member] = []
         guild = self.bot.get_guild(self.cafe_guild_id)
         blocked_channels = 0
@@ -91,24 +91,24 @@ class Sneaks():
                         active_users.append(message.author)
             except discord.errors.Forbidden:
                 blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
-        print(f"\nFound {len(active_users)} active users. Access denied to {blocked_channels} channels.")
+        print(f"\n\033[1;32m Found {len(active_users)} active users. Access denied to {blocked_channels} channels.")
         # update the role
-        print("Assigning the role", end='')
+        print("\033[1;35m Assigning the role", end='')
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
         for user in role.members:
             if user not in active_users and user in guild.members:
                 await user.remove_roles(role)
-                print(f"\nRemoved active role from {user.name}", end='')
+                print(f"\n\033[1;32m Removed active role from {user.name}", end='')
             print(".", end='', flush=True)
         # add newly active members
         for user in active_users:
             if user not in role.members and user in guild.members:
                 await user.add_roles(role)
-                print(f"\nAssigned active role to {user.name}", end='')
+                print(f"\n\033[1;32m Assigned active role to {user.name}", end='')
             print(".", end='', flush=True)
         # done!
-        print(f"\nDone updating active role! Time elapsed: {time.time() - start_time}s")
+        print(f"\n\033[1;32m Done updating active role! Time elapsed: {time.time() - start_time}s")
         self.update_active_role_timestamp = time.time()
 
     # on_message events
@@ -123,7 +123,7 @@ class Sneaks():
         await message.add_reaction(emote)
         # if it is a good status, set it as your status too
         if 21 > len(message.content) > 2:
-            print(f"Stealing \"{message.content}\" as a status")
+            print(f"\033[1;32m Stealing \"{message.content}\" as a status")
             await self.bot.change_presence(activity=discord.Game(message.content)) # use it as your status for now, it will be updated in like 10 minutes
 
     async def react_keywords(self, message: discord.Message):
@@ -133,7 +133,7 @@ class Sneaks():
             if keyword in message.content.lower():
                 # react with the value of the key
                 value = self.emotes[random.choice(self.keyword_reactions[keyword])]
-                print(f"Reacting to {message.author}: \"{message.content}\" with {value}")
+                print(f"\033[1;32m Reacting to {message.author}: \"{message.content}\" with {value}")
                 await message.add_reaction(value) 
 
     async def chain_message(self, message: discord.Message):
@@ -148,7 +148,7 @@ class Sneaks():
             if v.content != self.last_four_messages[0].content:
                 return
         # contribute to the spam
-        print(f"Spamming {message.content}")
+        print(f"\033[1;32m Spamming {message.content}")
         await message.channel.send(content=message.content)
         # clear memory
         self.last_four_messages = []
