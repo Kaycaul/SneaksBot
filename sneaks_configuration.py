@@ -44,7 +44,12 @@ class SneaksConfiguration:
         "Jackbox Party Pack 7",
         "Bloons TD6",
         "with a ball of yarn",
-        "Genshin Impact"
+        "Genshin Impact",
+        "Skyfactory 4",
+        "FTB Academy",
+        "Create - Fabric 1.19.2",
+        "Blaseball",
+        "Dwarf Fortress"
     ]
 
     # sneaks should not be able to use these emotes
