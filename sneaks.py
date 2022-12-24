@@ -16,7 +16,6 @@ class Sneaks():
     days_before_inactive = 7 # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
-    last_four_messages = []
     all_known_emotes = [] # this will contain every emote and emoji sneaks has access to
     # config and configs
     config = SneaksConfiguration()
@@ -137,21 +136,15 @@ class Sneaks():
                 await message.add_reaction(value) 
 
     async def chain_message(self, message: discord.Message):
-        # save the last 4 messages received
-        self.last_four_messages.insert(0, message)
-        if len(self.last_four_messages) > 4:
-            self.last_four_messages.pop()
-        else:
-            return
-        # check if memory is repetitve 
-        for v in self.last_four_messages[1:]:
-            if v.content != self.last_four_messages[0].content:
+        # check if the last 4 messages in the channel are identical
+        history = [await m.content for m in message.channel.history(limit=4)]
+        while len(history) > 0:
+            if history.pop(0) != message.content:
                 return
+
         # contribute to the spam
         print(f"\033[1;35mSpamming \"{message.content}\"")
         await message.channel.send(content=message.content)
-        # clear memory
-        self.last_four_messages = []
 
     async def reply_ping(self, message: discord.Message):
         if "<@1050873792525774921>" in message.content:
