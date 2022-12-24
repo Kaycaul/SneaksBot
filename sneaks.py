@@ -136,10 +136,15 @@ class Sneaks():
                 await message.add_reaction(value) 
 
     async def chain_message(self, message: discord.Message):
+        
         # check if the last 4 messages in the channel are identical
-        history = [await m.content for m in message.channel.history(limit=4)]
+        history = await message.channel.history(limit=4)
+        # check if sneaks is included in the chain, and abort if so
+        if self.bot.user in [m.author for m in history]:
+            return 
+        # abort if any of the previous messages dont match the new one
         while len(history) > 0:
-            if history.pop(0) != message.content:
+            if history.pop(0).content != message.content:
                 return
 
         # contribute to the spam
