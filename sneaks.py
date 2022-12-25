@@ -62,7 +62,6 @@ class Sneaks():
             return
         # choose a new activity to play from the lists  
         probability_of_listening = len(self.activities_listening) / (len(self.activities_playing) + len(self.activities_listening))
-        print(probability_of_listening)
         if random.random() < probability_of_listening:
             # random artist
             new_activity_name = random.choice(self.activities_listening)
