@@ -68,6 +68,7 @@ class SneaksConfiguration:
         "Tokobot",
         "Trove",
         "Deltarune",
+        "Windows 93",
         "lego power miners"
         
     ]
@@ -101,7 +102,6 @@ class SneaksConfiguration:
         "Tatsuro Yamashita",
         "Hallmark '87",
         "TOWERS",
-        "Windows 93",
         "youtu.be/dQw4w9WgXcQ",
         "Pendulum"
     ]
