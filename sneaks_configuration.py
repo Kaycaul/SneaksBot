@@ -49,7 +49,26 @@ class SneaksConfiguration:
         "FTB Academy",
         "Create - Fabric 1.19.2",
         "Blaseball",
-        "Dwarf Fortress"
+        "Dwarf Fortress",
+        "No Mans Sky",
+        "Getting Over It",
+        "Spaceteam",
+        "Shenzhen I/O",
+        "slither.io",
+        "agar.io",
+        "Powder Game",
+        "Subnautica",
+        "Full of Stars",
+        "Undertale",
+        "Deltarune",
+        "Trackmania",
+        "Cookie Clicker",
+        "BFDIA 5b",
+        "Worms Armageddon",
+        "Tokobot",
+        "Trove",
+        "Deltarune",
+        "Windows 93"
     ]
 
     # sneaks should not be able to use these emotes
