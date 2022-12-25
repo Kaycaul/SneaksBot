@@ -68,7 +68,42 @@ class SneaksConfiguration:
         "Tokobot",
         "Trove",
         "Deltarune",
-        "Windows 93"
+        "Windows 93",
+        "lego power miners"
+        
+    ]
+
+    # list of activites that are songs for sneaks to listen to
+    activities_listening = [
+        "Porter Robinson",
+        "Madeon",
+        "Mariah Carey",
+        "FM-84",
+        "The Midnight",
+        "Disasterpeace",
+        "Fearofdark",
+        "DaymanOurSaviour",
+        "Mariya Takeuchi",
+        "Windows96",
+        "Protodome",
+        "Tally Hall",
+        "Lemon Demon",
+        "Toshiki Kadomatsu",
+        "HOME",
+        "A.L.I.S.O.N",
+        "猫 シ Corp.",
+        "Pilotredsun",
+        "K/DA",
+        "Tycho",
+        "Caramelldansen",
+        "MACINTOSH PLUS",
+        "C418",
+        "Masayoshi Takanaka",
+        "Tatsuro Yamashita",
+        "Hallmark '87",
+        "TOWERS",
+        "youtu.be/dQw4w9WgXcQ",
+        "Pendulum"
     ]
 
     # sneaks should not be able to use these emotes

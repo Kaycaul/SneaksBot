@@ -20,6 +20,7 @@ class Sneaks():
     # config and configs
     config = SneaksConfiguration()
     activities_playing = config.activities_playing
+    activities_listening = config.activities_listening
     emotes = config.emotes
     greeting_reactions = config.greeting_reactions
     keyword_reactions = config.keyword_reactions
@@ -59,11 +60,21 @@ class Sneaks():
         # return if too early
         if time.time() - self.update_status_timestamp < frequency:
             return
-        # choose a new activity to play from the list
-        new_activity_name = random.choice(self.activities_playing)
-        print(f"\033[1;36mSwitching status to \033[1;34m'Playing {new_activity_name}'")
+        # choose a new activity to play from the lists  
+        probability_of_listening = len(self.activities_listening) / (len(self.activities_playing) + len(self.activities_listening))
+        print(probability_of_listening)
+        if random.random() < probability_of_listening:
+            # random artist
+            new_activity_name = random.choice(self.activities_listening)
+            print(f"\033[1;36mSwitching status to \033[1;34m'Listening to {new_activity_name}'")
+            new_activity = discord.Activity(name=new_activity_name,type=2)
+        else:
+            # random game
+            new_activity_name = random.choice(self.activities_playing)
+            print(f"\033[1;36mSwitching status to \033[1;34m'Playing {new_activity_name}'")
+            new_activity = discord.Game(new_activity_name)
         # update the presence
-        await self.bot.change_presence(activity=discord.Game(new_activity_name))
+        await self.bot.change_presence(activity=new_activity)
         # save the time
         self.update_status_timestamp = time.time()
 
