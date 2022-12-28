@@ -160,3 +160,12 @@ class SneaksConfiguration:
         "sneak" : greeting_reactions,
         "snuck" : greeting_reactions
     }
+
+    # ids of the trophy emotes, searched for in the art battle recap
+    trophies = [
+        969750249721720882,
+        991050295490514954,
+        991050296526516275,
+        991050294467121172,
+        991050293401772102
+    ]

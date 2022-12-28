@@ -12,6 +12,8 @@ class Sneaks():
     doeball_uid = 692583640538021908
     cafe_guild_id = 923788487562493982
     active_role_id = 1054661101029179453
+    art_battle_channel = 923801808512647210
+    announcements_channel = 923813516970975282
     reaction_chance = 99
     days_before_inactive = 7 # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
@@ -177,3 +179,64 @@ class Sneaks():
                 await message.reply(content=message_to_send)
                 message_to_send = ""
         await message.reply(content=message_to_send)
+
+    # copies the most awarded posts from #art-battle to #announcements, on demand
+    async def art_battle_recap(self, input: discord.Message):
+        if not input.content.lower() == "<@1050873792525774921> recap":
+            return
+        if not input.channel.id == self.announcements_channel:
+            return
+        print("\033[1;32mStarting art battle recap!")
+        # get a history of every message in art battle, from the last calendar month
+        art_battle: discord.TextChannel = self.bot.get_channel(self.art_battle_channel)
+        today = datetime.datetime.today()
+        last_month = today.month - 1 if today.month != 1 else 12
+        year = today.year if last_month != 12 else today.year - 1
+        start = datetime.datetime(year=year, month=last_month, day=1)
+        end = datetime.datetime(year=today.year, month=today.month, day=1)
+        history = [m async for m in art_battle.history(before=end, after=start)]
+        # for each trophy emote, find the message with the most
+        top_attacks = []
+        for trophy in [self.bot.get_emoji(emoji) for emoji in self.config.trophies]:
+            print(f"\033[1;32mSearching for best {trophy.name} post")
+            # find the top message for this trophy
+            top_message = history[0]
+            most_reactions = 0
+            for message in history:
+                # find the trophy in question for this message
+                for reaction in message.reactions:
+                    if reaction.emoji != trophy:
+                        continue
+                    # if this one is better, it is the new best
+                    if reaction.count > most_reactions:
+                        top_message = message
+                        most_reactions = reaction.count
+            # quickly check the best messages dont have zero reactions (nobody won)
+            if most_reactions == 0:
+                print("\033[1;32mCould not find any!")
+                continue
+            # add the message to the top attacks
+            print(f"\033[1;32mFound a message by {top_message.author}")
+            top_attacks.append(top_message)
+        # quickly check that the same message does not appear twice (it won twice)
+        top_attacks = list(dict.fromkeys(top_attacks))
+        # post each in announcements, along with the author, content, and number of each trophy.
+        announcements: discord.TextChannel = self.bot.get_channel(self.announcements_channel)
+        for attack in top_attacks:
+            # assemble a message for this top attack
+            # include the author
+            content = f"<@{attack.author.id}> got "
+            # include the number of each trophy
+            for trophy in [self.bot.get_emoji(emoji) for emoji in self.config.trophies]:
+                for reaction in attack.reactions:
+                    if reaction.emoji != trophy:
+                        continue
+                    content += f"{reaction.count} <:{trophy.name}:{trophy.id}> "
+            # include the content of the original message
+            content += f"\"*{attack.content}*\""
+            # add links to each attachment
+            for attachment in attack.attachments:
+                content += f" {attachment.url}"
+            # post the message
+            await announcements.send(content=content)
+        print(f"\033[1;32mFinished art battle recap!")
