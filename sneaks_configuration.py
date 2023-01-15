@@ -1,5 +1,5 @@
 class SneaksConfiguration:
-    greeting_reactions = ["bl", "boil", "hard", "matt", "sack", "gloglet"]
+    greeting_reactions = ["bl", "boil", "hard", "matt", "sack", "gloglet", "sneakers"]
 
     # list of activities sneaks could be playing, randomly cycled through
     activities_playing = [
@@ -151,7 +151,8 @@ class SneaksConfiguration:
         "sack" : "<:sack:924512985504960552>",
         "resentment" : "<:resentment:924072022160584704>",
         "okay" : "<:okay:936301680746700810>",
-        "gloglet" : "<a:gloglet:1040418817119092806>"
+        "gloglet" : "<a:gloglet:1040418817119092806>",
+        "sneakers" : "<:sneakers:1064268113434120243>",
     }
 
     # dictionary of what emotes to use to react to which messages
