@@ -69,7 +69,8 @@ class SneaksConfiguration:
         "Trove",
         "Deltarune",
         "Windows 93",
-        "lego power miners"
+        "lego power miners",
+        "Hatsune Miku: Project DIVA Mega Mix+"
         
     ]
 
