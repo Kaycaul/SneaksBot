@@ -108,7 +108,7 @@ class Sneaks():
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
         for user in role.members:
-            if user not in active_users and user in guild.members:
+            if (user not in active_users and user in guild.members) and not user == self.bot.user:
                 await user.remove_roles(role)
                 print(f"\n\033[1;36mRemoved active role from \033[1;34m{user.name}", end='')
             print("\033[1;36m.", end='', flush=True)
