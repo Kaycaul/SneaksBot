@@ -6,6 +6,7 @@ from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 from discord.utils import get
 
+
 class Sneaks():
 
     # initial values
@@ -15,10 +16,11 @@ class Sneaks():
     art_battle_channel = 923801808512647210
     announcements_channel = 923813516970975282
     reaction_chance = 99
-    days_before_inactive = 7 # the number of days until sneaks no longer considers a user "active"
+    days_before_inactive = 7  # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
-    all_known_emotes = [] # this will contain every emote and emoji sneaks has access to
+    all_known_emotes = [
+    ]  # this will contain every emote and emoji sneaks has access to
     # config and configs
     config = SneaksConfiguration()
     activities_playing = config.activities_playing
@@ -34,14 +36,13 @@ class Sneaks():
     intents.presences = True
     bot = commands.Bot(
         intents=intents,
-        command_prefix="!", # Change to desired prefix
-        case_insensitive=True # Commands aren't case-sensitive
+        command_prefix="!",  # Change to desired prefix
+        case_insensitive=True  # Commands aren't case-sensitive
     )
     # configuring the bot
     bot.author_id = doeball_uid
 
     # on ready events, occur outside a loop (only once)
-
     async def update_known_emotes(self):
         # collect all emotes from every guild
         for guild in self.bot.guilds:
@@ -54,7 +55,9 @@ class Sneaks():
                 self.all_known_emotes.append(emote)
         # add emoji that are known
         self.all_known_emotes += self.config.emoji_whitelist
-        print(f"\033[1;36mCollected \033[1;34m{len(self.all_known_emotes)} \033[1;36memotes")
+        print(
+            f"\033[1;36mCollected \033[1;34m{len(self.all_known_emotes)} \033[1;36memotes"
+        )
 
     # on_ready events, occur inside a loop
 
@@ -62,17 +65,22 @@ class Sneaks():
         # return if too early
         if time.time() - self.update_status_timestamp < frequency:
             return
-        # choose a new activity to play from the lists  
-        probability_of_listening = len(self.activities_listening) / (len(self.activities_playing) + len(self.activities_listening))
+        # choose a new activity to play from the lists
+        probability_of_listening = len(self.activities_listening) / (
+            len(self.activities_playing) + len(self.activities_listening))
         if random.random() < probability_of_listening:
             # random artist
             new_activity_name = random.choice(self.activities_listening)
-            print(f"\033[1;36mSwitching status to \033[1;34m'Listening to {new_activity_name}'")
-            new_activity = discord.Activity(name=new_activity_name,type=2)
+            print(
+                f"\033[1;36mSwitching status to \033[1;34m'Listening to {new_activity_name}'"
+            )
+            new_activity = discord.Activity(name=new_activity_name, type=2)
         else:
             # random game
             new_activity_name = random.choice(self.activities_playing)
-            print(f"\033[1;36mSwitching status to \033[1;34m'Playing {new_activity_name}'")
+            print(
+                f"\033[1;36mSwitching status to \033[1;34m'Playing {new_activity_name}'"
+            )
             new_activity = discord.Game(new_activity_name)
         # update the presence
         await self.bot.change_presence(activity=new_activity)
@@ -96,46 +104,65 @@ class Sneaks():
         blocked_channels = 0
         for channel in guild.text_channels:
             try:
-                async for message in channel.history(before=before, after=after): # possibly very slow!!
+                async for message in channel.history(
+                        before=before, after=after):  # possibly very slow!!
                     if not message.author.bot and message.author not in active_users:
                         print("\033[1;36m.", end='', flush=True)
                         active_users.append(message.author)
             except discord.errors.Forbidden:
-                blocked_channels += 1 # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
-        print(f"\n\033[1;36mFound \033[1;34m{len(active_users)} \033[1;36mactive users. Access denied to \033[1;34m{blocked_channels} \033[1;36mchannels.")
+                blocked_channels += 1  # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+        print(
+            f"\n\033[1;36mFound \033[1;34m{len(active_users)} \033[1;36mactive users. Access denied to \033[1;34m{blocked_channels} \033[1;36mchannels."
+        )
         # update the role
         print("\033[1;36mAssigning the role", end='')
         role: discord.Role = get(guild.roles, id=self.active_role_id)
         # remove newly inactive members
         for user in role.members:
-            if (user not in active_users and user in guild.members) and not user == self.bot.user:
+            if (user not in active_users
+                    and user in guild.members) and not user == self.bot.user:
                 await user.remove_roles(role)
-                print(f"\n\033[1;36mRemoved active role from \033[1;34m{user.name}", end='')
+                print(
+                    f"\n\033[1;36mRemoved active role from \033[1;34m{user.name}",
+                    end='')
             print("\033[1;36m.", end='', flush=True)
         # add newly active members
         for user in active_users:
             if user not in role.members and user in guild.members:
                 await user.add_roles(role)
-                print(f"\n\033[1;36mAssigned active role to \033[1;34m{user.name}", end='')
+                print(
+                    f"\n\033[1;36mAssigned active role to \033[1;34m{user.name}",
+                    end='')
             print("\033[1;36m.", end='', flush=True)
         # done!
-        print(f"\n\033[1;36mDone updating active role! Time elapsed: \033[1;34m{time.time() - start_time}s")
+        print(
+            f"\n\033[1;36mDone updating active role! Time elapsed: \033[1;34m{time.time() - start_time}s"
+        )
         self.update_active_role_timestamp = time.time()
 
     # on_message events
 
     async def react_random(self, message: discord.Message):
+        if message.content == "i have no idea what youre talking about":
+            await message.reply(content="[laugh track]")
+        if "sneaks is gay" in message.content:
+            await message.reply(
+                content="https://i.ytimg.com/vi/Jdg5u_E0Bgo/hqdefault.jpg")
         # randomly abort like 99% of the time
         if random.randint(0, self.reaction_chance) != 0:
             return
         # react with a random known emote
         emote = random.choice(self.all_known_emotes)
-        print(f"\033[1;35mReacting to {message.author}: \"{message.content}\" with {emote}")
+        print(
+            f"\033[1;35mReacting to {message.author}: \"{message.content}\" with {emote}"
+        )
         await message.add_reaction(emote)
         # if it is a good status, set it as your status too
         if 21 > len(message.content) > 2:
             print(f"\033[1;35mStealing \"{message.content}\" as a status")
-            await self.bot.change_presence(activity=discord.Game(message.content)) # use it as your status for now, it will be updated in like 10 minutes
+            await self.bot.change_presence(
+                activity=discord.Game(message.content)
+            )  # use it as your status for now, it will be updated in like 10 minutes
 
     async def react_keywords(self, message: discord.Message):
         # react to keywords
@@ -143,12 +170,15 @@ class Sneaks():
             # if the key is in the message
             if keyword in message.content.lower():
                 # react with the value of the key
-                value = self.emotes[random.choice(self.keyword_reactions[keyword])]
-                print(f"\033[1;35mReacting to \"{message.content}\" with {value}")
-                await message.add_reaction(value) 
+                value = self.emotes[random.choice(
+                    self.keyword_reactions[keyword])]
+                print(
+                    f"\033[1;35mReacting to \"{message.content}\" with {value}"
+                )
+                await message.add_reaction(value)
 
     async def chain_message(self, message: discord.Message):
-        
+
         # check if the last 4 messages in the channel are identical
         # or if sneaks has already spoken recently, and is found in the history
         history = [m async for m in message.channel.history(limit=4)]
@@ -163,13 +193,15 @@ class Sneaks():
 
     async def reply_ping(self, message: discord.Message):
         if "<@1050873792525774921>" in message.content:
-            emote_response = self.emotes[random.choice(self.greeting_reactions)]
+            emote_response = self.emotes[random.choice(
+                self.greeting_reactions)]
             print(f"\033[1;35mReplying to mention from {message.author}")
-            await message.reply(content=emote_response*random.randint(1,3))
+            await message.reply(content=emote_response * random.randint(1, 3))
 
     # prints every emote, mostly for testing but also probably funny
     async def emote_dump(self, message: discord.Message):
-        if not "spam me with every emote you know please" in message.content.lower():
+        if not "spam me with every emote you know please" in message.content.lower(
+        ):
             return
         # print every known message
         message_to_send = ""
@@ -188,16 +220,21 @@ class Sneaks():
             return
         print("\033[1;32mStarting art battle recap!")
         # get a history of every message in art battle, from the last calendar month
-        art_battle: discord.TextChannel = self.bot.get_channel(self.art_battle_channel)
+        art_battle: discord.TextChannel = self.bot.get_channel(
+            self.art_battle_channel)
         today = datetime.datetime.today()
         last_month = today.month - 1 if today.month != 1 else 12
         year = today.year if last_month != 12 else today.year - 1
         start = datetime.datetime(year=year, month=last_month, day=1)
         end = datetime.datetime(year=today.year, month=today.month, day=1)
-        history = [m async for m in art_battle.history(before=end, after=start)]
+        history = [
+            m async for m in art_battle.history(before=end, after=start)
+        ]
         # for each trophy emote, find the message with the most
         top_attacks = []
-        for trophy in [self.bot.get_emoji(emoji) for emoji in self.config.trophies]:
+        for trophy in [
+                self.bot.get_emoji(emoji) for emoji in self.config.trophies
+        ]:
             print(f"\033[1;32mSearching for best {trophy.name} post")
             # find the top message for this trophy
             top_message = history[0]
@@ -221,13 +258,16 @@ class Sneaks():
         # quickly check that the same message does not appear twice (it won twice)
         top_attacks = list(dict.fromkeys(top_attacks))
         # post each in announcements, along with the author, content, and number of each trophy.
-        announcements: discord.TextChannel = self.bot.get_channel(self.announcements_channel)
+        announcements: discord.TextChannel = self.bot.get_channel(
+            self.announcements_channel)
         for attack in top_attacks:
             # assemble a message for this top attack
             # include the author
             content = f"<@{attack.author.id}> got "
             # include the number of each trophy
-            for trophy in [self.bot.get_emoji(emoji) for emoji in self.config.trophies]:
+            for trophy in [
+                    self.bot.get_emoji(emoji) for emoji in self.config.trophies
+            ]:
                 for reaction in attack.reactions:
                     if reaction.emoji != trophy:
                         continue
