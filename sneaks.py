@@ -16,7 +16,7 @@ class Sneaks():
     art_battle_channel = 923801808512647210
     announcements_channel = 923813516970975282
     reaction_chance = 99
-    days_before_inactive = 7  # the number of days until sneaks no longer considers a user "active"
+    days_before_inactive = 5  # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
     all_known_emotes = [
@@ -94,7 +94,7 @@ class Sneaks():
         # track the time (for logging of course)
         start_time = time.time()
         print("\033[1;36mUpdating the active role!")
-        # compute the range of dates to scan
+        # compute the range of dates to scan, before today, after a couple days ago
         before = datetime.datetime.today()
         after = before - datetime.timedelta(days=self.days_before_inactive)
         # scan every channel and every message in those channels and note each user found
@@ -104,8 +104,12 @@ class Sneaks():
         blocked_channels = 0
         for channel in guild.text_channels:
             try:
-                async for message in channel.history(
-                        before=before, after=after):  # possibly very slow!!
+                # SOMETHING IS WRONG WITH THE DATE!!! the date is seemingly calculated correctly
+                # the role is assigned correctly
+                # he is not able to see every message inside the date
+                # something is wrong with these arguments somehow
+                # I HAVE NO IDEA WHY THIS WORKS NOW, i replaced the after argument with limit 10000, its slow but works
+                async for message in channel.history(after=after, limit=10000):  # possibly very slow!!
                     if not message.author.bot and message.author not in active_users:
                         print("\033[1;36m.", end='', flush=True)
                         active_users.append(message.author)
@@ -136,7 +140,7 @@ class Sneaks():
             print("\033[1;36m.", end='', flush=True)
         # done!
         print(
-            f"\n\033[1;36mDone updating active role! Time elapsed: \033[1;34m{time.time() - start_time}s"
+            f"\n\033[1;36mDone updating active role! Time elapsed: \033[1;34m{int(time.time() - start_time)}s"
         )
         self.update_active_role_timestamp = time.time()
 
