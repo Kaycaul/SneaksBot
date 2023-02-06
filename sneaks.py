@@ -16,7 +16,7 @@ class Sneaks():
     art_battle_channel = 923801808512647210
     announcements_channel = 923813516970975282
     reaction_chance = 299
-    keyword_reaction_chance = 3
+    keyword_reaction_chance = 2
     days_before_inactive = 5  # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
@@ -148,11 +148,6 @@ class Sneaks():
     # on_message events
 
     async def react_random(self, message: discord.Message):
-        if message.content == "i have no idea what youre talking about":
-            await message.reply(content="[laugh track]")
-        if "sneaks is gay" in message.content:
-            await message.reply(
-                content="https://i.ytimg.com/vi/Jdg5u_E0Bgo/hqdefault.jpg")
         # randomly abort like 99% of the time
         if random.randint(0, self.reaction_chance) != 0:
             return
