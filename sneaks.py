@@ -15,7 +15,8 @@ class Sneaks():
     active_role_id = 1054661101029179453
     art_battle_channel = 923801808512647210
     announcements_channel = 923813516970975282
-    reaction_chance = 99
+    reaction_chance = 299
+    keyword_reaction_chance = 3
     days_before_inactive = 5  # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
@@ -171,6 +172,9 @@ class Sneaks():
     async def react_keywords(self, message: discord.Message):
         # react to keywords
         for keyword in self.keyword_reactions.keys():
+            # randomly break here
+            if random.randint(0, self.keyword_reaction_chance) != 0:
+                continue
             # if the key is in the message
             if keyword in message.content.lower():
                 # react with the value of the key
