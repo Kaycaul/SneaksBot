@@ -154,13 +154,16 @@ class SneaksConfiguration:
         "okay" : "<:okay:936301680746700810>",
         "gloglet" : "<a:gloglet:1040418817119092806>",
         "sneakers" : "<:sneakers:1064268113434120243>",
+        "ratio" : "<:ratio:1072002164479770704>",
     }
 
     # dictionary of what emotes to use to react to which messages
     keyword_reactions = {
         "d20" : ["presence", "fuckyou", "resentment", "okay"],
         "sneak" : greeting_reactions,
-        "snuck" : greeting_reactions
+        "snuck" : greeting_reactions,
+        "ratio" : ["ratio"],
+        "alex" : ["ratio"],
     }
 
     # ids of the trophy emotes, searched for in the art battle recap
