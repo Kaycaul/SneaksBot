@@ -17,7 +17,7 @@ async def on_ready():  # When the bot is ready
     while True:
         #await sneaksbot.update_active_role(3600) # this will recur every hour
         await sneaksbot.update_status(600) # this will recur every 10 minutes
-        await sneaksbot.update_profile(900) # every 15 minutes
+        await sneaksbot.update_profile(3000)
         await asyncio.sleep(1)
 
 

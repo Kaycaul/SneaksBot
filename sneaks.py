@@ -76,7 +76,6 @@ class Sneaks():
       
       # set the profile picture
       await self.bot.user.edit(avatar=pfp)
-      print("\033[1;36mProfile set!")
 
       # new timestamp
       self.update_profile_timestamp = time.time()
