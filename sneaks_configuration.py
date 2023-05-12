@@ -70,8 +70,14 @@ class SneaksConfiguration:
         "Deltarune",
         "Windows 93",
         "lego power miners",
-        "Hatsune Miku: Project DIVA Mega Mix+"
-        
+        "Hatsune Miku: Project DIVA Mega Mix+",
+        "Sayonara Wild Hearts",
+        "Deep Rock Galactic",
+        "Pizza Tower",
+        "The Stanley Parable",
+        "Papers, Please",
+        "Blender",
+        "MTGArena"
     ]
 
     # list of activites that are songs for sneaks to listen to
@@ -104,7 +110,8 @@ class SneaksConfiguration:
         "Hallmark '87",
         "TOWERS",
         "youtu.be/dQw4w9WgXcQ",
-        "Pendulum"
+        "Pendulum",
+        "the screams of hell"
     ]
 
     # sneaks should not be able to use these emotes
@@ -173,4 +180,16 @@ class SneaksConfiguration:
         991050296526516275,
         991050294467121172,
         991050293401772102
+    ]
+
+    # pfps for sneaks to use
+    pfps = [
+      "sneakers.png",
+      "sneaks.png",
+      "sneaks2.png",
+      "sneaks3.png",
+      "sneaks4.png",
+      "sneaks5.png",
+      "sneaks6.png",
+      "sneaks7.png",
     ]

@@ -20,6 +20,7 @@ class Sneaks():
     days_before_inactive = 5  # the number of days until sneaks no longer considers a user "active"
     update_status_timestamp = 0
     update_active_role_timestamp = 0
+    update_profile_timestamp = 0
     all_known_emotes = [
     ]  # this will contain every emote and emoji sneaks has access to
     # config and configs
@@ -61,6 +62,24 @@ class Sneaks():
         )
 
     # on_ready events, occur inside a loop
+
+    async def update_profile(self, frequency):
+      # return if too early
+      if time.time() - self.update_profile_timestamp < frequency:
+        return
+
+      # choose a new profile picture
+      path = "ProfileIcons/" + random.choice(self.config.pfps)
+      print("\033[1;36mUpdating profile picture to \033[1;34m'" + path + "'")
+      fp = open(path, 'rb')
+      pfp = fp.read()
+      
+      # set the profile picture
+      await self.bot.user.edit(avatar=pfp)
+      print("\033[1;36mProfile set!")
+
+      # new timestamp
+      self.update_profile_timestamp = time.time()
 
     async def update_status(self, frequency):
         # return if too early
@@ -110,7 +129,7 @@ class Sneaks():
                 # he is not able to see every message inside the date
                 # something is wrong with these arguments somehow
                 # I HAVE NO IDEA WHY THIS WORKS NOW, i replaced the after argument with limit 10000, its slow but works
-                async for message in channel.history(after=after, limit=10000):  # possibly very slow!!
+                async for message in channel.history(after=after, limit=10):  # possibly very slow!!
                     if not message.author.bot and message.author not in active_users:
                         print("\033[1;36m.", end='', flush=True)
                         active_users.append(message.author)
@@ -147,7 +166,22 @@ class Sneaks():
 
     # on_message events
 
+    async def echo_message(self, message: discord.Message):
+      # echo messages
+      if not message.content[0:5] == "echo ":
+        return
+      # randomly dont because lol
+      if random.randint(0,100) == 69:
+        await message.channel.send(content="no lmao")
+        await message.channel.send(content="https://cdn.discordapp.com/attachments/923788487562493985/1106443679088001074/xfCCMdjed9FsPAc7AIBLFgEq.png")
+        return
+      text = message.content[5:].lower()
+      await message.channel.send(content=text)
+      print(f"\033[1;35mEchoed \"{text}\" from {message.author}")
+      await message.delete()
+
     async def react_random(self, message: discord.Message):
+        
         # randomly abort like 99% of the time
         if random.randint(0, self.reaction_chance) != 0:
             return

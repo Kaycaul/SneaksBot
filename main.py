@@ -15,8 +15,9 @@ async def on_ready():  # When the bot is ready
     await sneaksbot.update_known_emotes()
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
-        await sneaksbot.update_active_role(3600) # this will recur every hour
+        #await sneaksbot.update_active_role(3600) # this will recur every hour
         await sneaksbot.update_status(600) # this will recur every 10 minutes
+        await sneaksbot.update_profile(900) # every 15 minutes
         await asyncio.sleep(1)
 
 
@@ -24,6 +25,7 @@ async def on_ready():  # When the bot is ready
 async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
+    await sneaksbot.echo_message(message)
     await sneaksbot.react_random(message)
     await sneaksbot.react_keywords(message)
     await sneaksbot.chain_message(message)
