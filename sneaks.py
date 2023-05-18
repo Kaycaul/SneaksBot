@@ -166,6 +166,13 @@ class Sneaks():
 
     # on_message events
 
+    async def play_music(self, message):
+      # get only the url
+
+      # run yt-dlp on the url
+
+      # 
+
     async def download_video(self, message):
       prefix = "download "
       prefix_length = len(prefix)

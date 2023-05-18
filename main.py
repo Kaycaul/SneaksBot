@@ -25,6 +25,7 @@ async def on_ready():  # When the bot is ready
 async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
+    await sneaksbot.play_music(message)
     await sneaksbot.download_video(message)
     await sneaksbot.echo_message(message)
     await sneaksbot.react_random(message)
