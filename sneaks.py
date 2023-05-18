@@ -5,6 +5,7 @@ import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 from discord.utils import get
+import os
 
 
 class Sneaks():
@@ -165,6 +166,36 @@ class Sneaks():
 
     # on_message events
 
+    async def download_video(self, message):
+      prefix = "download "
+      prefix_length = len(prefix)
+      if not message.content[:prefix_length] == prefix:
+        return
+      # clear
+      if os.path.exists("download.mp4"):
+        os.remove("download.mp4")
+      # get only the url
+      url = message.content[prefix_length:]
+      # run yt-dlp on the url
+      try:
+        os.system(f'yt-dlp -o download.mp4 --playlist-end 1 \"{url}\"')
+      except Exception as e:
+        print("\033[1;31m" + str(e))
+        await message.reply(content="download didnt work")
+        return
+      # post the message as an attachment
+      try:
+        await message.reply(file=discord.File(r"download.mp4"))
+      except Exception as e:
+        print("\033[1;31m" + str(e))
+        await message.reply(content="cant send it")
+        return
+      # delete the file locally
+      if os.path.exists("download.mp4"):
+        os.remove("download.mp4")
+      # i cant beleive this just works its a miracle
+      print(f"\033[1;35mDownloaded: {message.content[prefix_length:]}")
+
     async def echo_message(self, message: discord.Message):
       # echo messages
       if not message.content[0:5] == "echo ":
@@ -176,7 +207,7 @@ class Sneaks():
         return
       text = message.content[5:].lower()
       await message.channel.send(content=text)
-      print(f"\033[1;35mEchoed \"{text}\" from {message.author}")
+      print(f'\033[1;35mEchoed \"{text}\" from {message.author}')
       await message.delete()
 
     async def react_random(self, message: discord.Message):
@@ -187,12 +218,12 @@ class Sneaks():
         # react with a random known emote
         emote = random.choice(self.all_known_emotes)
         print(
-            f"\033[1;35mReacting to {message.author}: \"{message.content}\" with {emote}"
+            f'\033[1;35mReacting to {message.author}: \"{message.content}\" with {emote}'
         )
         await message.add_reaction(emote)
         # if it is a good status, set it as your status too
         if 21 > len(message.content) > 2:
-            print(f"\033[1;35mStealing \"{message.content}\" as a status")
+            print(f'\033[1;35mStealing \"{message.content}\" as a status')
             await self.bot.change_presence(
                 activity=discord.Game(message.content)
             )  # use it as your status for now, it will be updated in like 10 minutes
@@ -209,7 +240,7 @@ class Sneaks():
                 value = self.emotes[random.choice(
                     self.keyword_reactions[keyword])]
                 print(
-                    f"\033[1;35mReacting to \"{message.content}\" with {value}"
+                    f'\033[1;35mReacting to \"{message.content}\" with {value}'
                 )
                 await message.add_reaction(value)
 
@@ -224,7 +255,7 @@ class Sneaks():
                 return
 
         # contribute to the spam
-        print(f"\033[1;35mSpamming \"{message.content}\"")
+        print(f'\033[1;35mSpamming \"{message.content}\"')
         await message.channel.send(content=message.content)
 
     async def reply_ping(self, message: discord.Message):
