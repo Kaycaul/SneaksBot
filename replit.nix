@@ -1,5 +1,6 @@
 { pkgs }: {
   deps = [
+    pkgs.ffmpeg.bin
     pkgs.python38Full
     pkgs.replitPackages.prybar-python3
   ];

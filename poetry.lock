@@ -52,6 +52,17 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
+name = "cffi"
+version = "1.15.1"
+description = "Foreign Function Interface for Python calling C code."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pycparser = "*"
+
+[[package]]
 name = "charset-normalizer"
 version = "2.1.1"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
@@ -108,6 +119,14 @@ docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websu
 speed = ["orjson (>=3.5.4)", "aiodns (>=1.1)", "brotli", "cchardet (==2.1.7)"]
 test = ["coverage", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock", "typing-extensions (>=4.3,<5)"]
 voice = ["PyNaCl (>=1.3.0,<1.6)"]
+
+[[package]]
+name = "ffmpeg"
+version = "1.4"
+description = "ffmpeg python package url [https://github.com/jiashaokun/ffmpeg]"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "flask"
@@ -199,6 +218,40 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "opus20"
+version = "1.0.1"
+description = "Interface to Lufft OPUS20 devices"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+webserver = ["bottle", "matplotlib", "jinja2", "pandas", "numpy", "pillow"]
+
+[[package]]
+name = "pycparser"
+version = "2.21"
+description = "C parser in Python"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "pynacl"
+version = "1.5.0"
+description = "Python binding to the Networking and Cryptography (NaCl) library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+cffi = ">=1.4.1"
+
+[package.extras]
+docs = ["sphinx (>=1.6.5)", "sphinx-rtd-theme"]
+tests = ["pytest (>=3.2.1,!=3.3.0)", "hypothesis (>=3.27.0)"]
+
+[[package]]
 name = "werkzeug"
 version = "2.2.2"
 description = "The comprehensive WSGI web application library."
@@ -239,18 +292,20 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "04c2a5a75218ceb0eb7bd25c26bf73646cffa716052fda74eaf42eade6f660c3"
+content-hash = "9b22d5a553370b8e7fc115c891af0a58e75b0c5541f594d44543a6da12e6cc02"
 
 [metadata.files]
 aiohttp = []
 aiosignal = []
 async-timeout = []
 attrs = []
+cffi = []
 charset-normalizer = []
 click = []
 colorama = []
 discord = []
 "discord.py" = []
+ffmpeg = []
 flask = []
 frozenlist = []
 idna = []
@@ -259,6 +314,9 @@ itsdangerous = []
 jinja2 = []
 markupsafe = []
 multidict = []
+opus20 = []
+pycparser = []
+pynacl = []
 werkzeug = []
 yarl = []
 zipp = []

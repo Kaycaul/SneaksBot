@@ -1,0 +1,8 @@
+
+[webserver]
+bottle
+matplotlib
+jinja2
+pandas
+numpy
+pillow

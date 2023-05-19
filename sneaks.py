@@ -172,6 +172,11 @@ class Sneaks():
     # on_message events
 
     async def play_music(self, message):
+        # currently broken, opus not loaded, not willing to deal with this lmao
+        if (true):
+          return
+        ##############
+        ##############
         prefix = "sneaksplay "
         prefix_length = len(prefix)
         if not message.content[:prefix_length] == prefix:
