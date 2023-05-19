@@ -5,7 +5,9 @@ import datetime
 from sneaks_configuration import SneaksConfiguration
 from discord.ext import commands
 from discord.utils import get
+from discord import FFmpegPCMAudio
 import os
+import asyncio
 
 
 class Sneaks():
@@ -18,7 +20,8 @@ class Sneaks():
     announcements_channel = 923813516970975282
     reaction_chance = 299
     keyword_reaction_chance = 2
-    days_before_inactive = 5  # the number of days until sneaks no longer considers a user "active"
+    # the number of days until sneaks no longer considers a user "active"
+    days_before_inactive = 5
     update_status_timestamp = 0
     update_active_role_timestamp = 0
     update_profile_timestamp = 0
@@ -65,21 +68,21 @@ class Sneaks():
     # on_ready events, occur inside a loop
 
     async def update_profile(self, frequency):
-      # return if too early
-      if time.time() - self.update_profile_timestamp < frequency:
-        return
+        # return if too early
+        if time.time() - self.update_profile_timestamp < frequency:
+            return
 
-      # choose a new profile picture
-      path = "ProfileIcons/" + random.choice(self.config.pfps)
-      print("\033[1;36mUpdating profile picture to \033[1;34m'" + path + "'")
-      fp = open(path, 'rb')
-      pfp = fp.read()
-      
-      # set the profile picture
-      await self.bot.user.edit(avatar=pfp)
+        # choose a new profile picture
+        path = "ProfileIcons/" + random.choice(self.config.pfps)
+        print("\033[1;36mUpdating profile picture to \033[1;34m'" + path + "'")
+        fp = open(path, 'rb')
+        pfp = fp.read()
 
-      # new timestamp
-      self.update_profile_timestamp = time.time()
+        # set the profile picture
+        await self.bot.user.edit(avatar=pfp)
+
+        # new timestamp
+        self.update_profile_timestamp = time.time()
 
     async def update_status(self, frequency):
         # return if too early
@@ -129,12 +132,14 @@ class Sneaks():
                 # he is not able to see every message inside the date
                 # something is wrong with these arguments somehow
                 # I HAVE NO IDEA WHY THIS WORKS NOW, i replaced the after argument with limit 10000, its slow but works
-                async for message in channel.history(after=after, limit=10):  # possibly very slow!!
+                # possibly very slow!!
+                async for message in channel.history(after=after, limit=10):
                     if not message.author.bot and message.author not in active_users:
                         print("\033[1;36m.", end='', flush=True)
                         active_users.append(message.author)
             except discord.errors.Forbidden:
-                blocked_channels += 1  # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+                # strangely enough, sneaks knows the admin channels exist, but isnt allowed to view them
+                blocked_channels += 1
         print(
             f"\n\033[1;36mFound \033[1;34m{len(active_users)} \033[1;36mactive users. Access denied to \033[1;34m{blocked_channels} \033[1;36mchannels."
         )
@@ -167,58 +172,98 @@ class Sneaks():
     # on_message events
 
     async def play_music(self, message):
-      # get only the url
+        prefix = "sneaksplay "
+        prefix_length = len(prefix)
+        if not message.content[:prefix_length] == prefix:
+            return
+        # get the voice channel and user
+        user = message.author
+        voice = user.voice
+        if not voice:
+            await message.reply(content="youre not in a vc")
+            return
+        voice_channel = voice.channel
+        received_time = time.time()
+        # get only the url
+        url = message.content[prefix_length:]
+        # run yt-dlp on the url
+        try:
+            # name the file with the current timestamp
+            os.system(
+                f'yt-dlp -x --audio-format mp3 --playlist-end 1 -o \"Songs\\{received_time}.mp3\" \"{url}\"')
+        except Exception as e:
+            print("\033[1;31m" + str(e))
+            await message.reply(content="download didnt work")
+            return
 
-      # run yt-dlp on the url
+        # join the vc
+        print(f"\033[1;36mJoining {voice_channel.name}")
+        voice = voice_channel.guild.voice_client
+        if voice and voice.is_connected():
+            print(f"\033[1;36mMoving to {voice_channel.name}")
+            await voice.move_to(voice_channel)
+        else:
+            print(f"\033[1;36mConnecting to {voice_channel.name}")
+            voice = await voice_channel.connect()
 
-      # 
+        # play the file in vc with the user
+        print(f"\033[1;36mPlaying {received_time}.mp3")
+        source = FFmpegPCMAudio(f"Songs\\{received_time}.mp3")
+        voice.play(source)
+
+        # wait until finished, delete the file and dc
+        while voice.is_playing():
+            await asyncio.sleep(1)
+        print(f"\033[1;36mDeleting {received_time}.mp3")
+        os.remove(f"Songs\\{received_time}.mp3")
+        await voice.disconnect()
 
     async def download_video(self, message):
-      prefix = "download "
-      prefix_length = len(prefix)
-      if not message.content[:prefix_length] == prefix:
-        return
-      # clear
-      if os.path.exists("download.mp4"):
-        os.remove("download.mp4")
-      # get only the url
-      url = message.content[prefix_length:]
-      # run yt-dlp on the url
-      try:
-        os.system(f'yt-dlp -o download.mp4 --playlist-end 1 \"{url}\"')
-      except Exception as e:
-        print("\033[1;31m" + str(e))
-        await message.reply(content="download didnt work")
-        return
-      # post the message as an attachment
-      try:
-        await message.reply(file=discord.File(r"download.mp4"))
-      except Exception as e:
-        print("\033[1;31m" + str(e))
-        await message.reply(content="cant send it")
-        return
-      # delete the file locally
-      if os.path.exists("download.mp4"):
-        os.remove("download.mp4")
-      # i cant beleive this just works its a miracle
-      print(f"\033[1;35mDownloaded: {message.content[prefix_length:]}")
+        prefix = "download "
+        prefix_length = len(prefix)
+        if not message.content[:prefix_length] == prefix:
+            return
+        # clear
+        if os.path.exists("download.mp4"):
+            os.remove("download.mp4")
+        # get only the url
+        url = message.content[prefix_length:]
+        # run yt-dlp on the url
+        try:
+            os.system(f'yt-dlp -o download.mp4 --playlist-end 1 \"{url}\"')
+        except Exception as e:
+            print("\033[1;31m" + str(e))
+            await message.reply(content="download didnt work")
+            return
+        # post the message as an attachment
+        try:
+            await message.reply(file=discord.File(r"download.mp4"))
+        except Exception as e:
+            print("\033[1;31m" + str(e))
+            await message.reply(content="cant send it")
+            return
+        # delete the file locally
+        if os.path.exists("download.mp4"):
+            os.remove("download.mp4")
+        # i cant beleive this just works its a miracle
+        print(f"\033[1;35mDownloaded: {message.content[prefix_length:]}")
 
     async def echo_message(self, message: discord.Message):
-      # echo messages
-      if not message.content[0:5] == "echo ":
-        return
-      # randomly dont because lol
-      if random.randint(0,100) == 69:
-        await message.channel.send(content="no lmao")
-        await message.channel.send(content="https://cdn.discordapp.com/attachments/923788487562493985/1106443679088001074/xfCCMdjed9FsPAc7AIBLFgEq.png")
-        return
-      text = message.content[5:].lower()
-      await message.channel.send(content=text)
-      print(f'\033[1;35mEchoed \"{text}\" from {message.author}')
-      await message.delete()
+        # echo messages
+        if not message.content[0:5] == "echo ":
+            return
+        # randomly dont because lol
+        if random.randint(0, 100) == 69:
+            await message.channel.send(content="no lmao")
+            await message.channel.send(content="https://cdn.discordapp.com/attachments/923788487562493985/1106443679088001074/xfCCMdjed9FsPAc7AIBLFgEq.png")
+            return
+        text = message.content[5:].lower()
+        await message.channel.send(content=text)
+        print(f'\033[1;35mEchoed \"{text}\" from {message.author}')
+        await message.delete()
 
     async def react_random(self, message: discord.Message):
-        
+
         # randomly abort like 99% of the time
         if random.randint(0, self.reaction_chance) != 0:
             return
