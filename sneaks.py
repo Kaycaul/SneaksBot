@@ -171,9 +171,16 @@ class Sneaks():
 
     # on_message events
 
+    async def stuff(self, message):
+      cleaned_message = message.content.lower()
+      if not cleaned_message[-5:] == "stuff" and not "doing stuff" in cleaned_message:
+        return
+      print(f"replying to message from {message.author} with stuff")
+      await message.reply(content="im stuff")
+
     async def play_music(self, message):
         # currently broken, opus not loaded, not willing to deal with this lmao
-        if (true):
+        if (True):
           return
         ##############
         ##############
