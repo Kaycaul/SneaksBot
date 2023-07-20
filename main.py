@@ -27,7 +27,7 @@ async def on_message(message: discord.Message):
         return
     await sneaksbot.stuff(message)
     await sneaksbot.play_music(message)
-    await sneaksbot.download_video(message)
+    #await sneaksbot.download_video(message)
     await sneaksbot.echo_message(message)
     await sneaksbot.react_random(message)
     await sneaksbot.react_keywords(message)

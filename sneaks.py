@@ -173,7 +173,7 @@ class Sneaks():
 
     async def stuff(self, message):
       cleaned_message = message.content.lower()
-      if not cleaned_message[-5:] == "stuff" and not "doing stuff" in cleaned_message:
+      if ((not cleaned_message[-5:] == "stuff") and (not "doing stuff" in cleaned_message)) or random.randint(0, 5) != 3:
         return
       print(f"replying to message from {message.author} with stuff")
       await message.reply(content="im stuff")
