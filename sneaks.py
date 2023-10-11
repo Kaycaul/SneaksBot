@@ -171,6 +171,12 @@ class Sneaks():
 
     # on_message events
 
+    async def stuff2(self, message):
+      cleaned_message = message.content.lower()
+      if "im stuff" in cleaned_message and random.randint(0, 5) == 0:
+        print(f"replying to message from {message.author} with i cant take it")
+        await message.reply(content=f"haha {message.author.name} i cant fucking take it anymore")
+
     async def stuff(self, message):
       cleaned_message = message.content.lower()
       if ((not cleaned_message[-5:] == "stuff") and (not "doing stuff" in cleaned_message)) or random.randint(0, 5) != 3:

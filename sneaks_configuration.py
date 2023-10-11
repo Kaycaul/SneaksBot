@@ -77,7 +77,16 @@ class SneaksConfiguration:
         "The Stanley Parable",
         "Papers, Please",
         "Blender",
-        "MTGArena"
+        "MTGArena",
+		"BTD6",
+		"EXAPUNKS",
+		"CS2",
+		"Source Filmmaker",
+		"Shadows of Doubt",
+		"Hitman: World of Assassination",
+		"Vim",
+		"Emacs",
+		"Subway Surfers"
     ]
 
     # list of activites that are songs for sneaks to listen to
@@ -111,7 +120,10 @@ class SneaksConfiguration:
         "TOWERS",
         "youtu.be/dQw4w9WgXcQ",
         "Pendulum",
-        "the screams of hell"
+        "the screams of hell",
+		"Initial D Soundtrack",
+		"Mr. Kitty",
+		"Inabakumori"
     ]
 
     # sneaks should not be able to use these emotes

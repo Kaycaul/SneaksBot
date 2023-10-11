@@ -26,6 +26,7 @@ async def on_message(message: discord.Message):
     if message.author == bot.user:
         return
     await sneaksbot.stuff(message)
+    await sneaksbot.stuff2(message)
     await sneaksbot.play_music(message)
     #await sneaksbot.download_video(message)
     await sneaksbot.echo_message(message)
