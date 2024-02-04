@@ -8,6 +8,7 @@ from discord.utils import get
 from discord import FFmpegPCMAudio
 import os
 import asyncio
+import glob
 
 
 class Sneaks():
@@ -73,7 +74,7 @@ class Sneaks():
             return
 
         # choose a new profile picture
-        path = "ProfileIcons/" + random.choice(self.config.pfps)
+        path = random.choice(glob.glob("ProfileIcons/*"))
         print("\033[1;36mUpdating profile picture to \033[1;34m'" + path + "'")
         fp = open(path, 'rb')
         pfp = fp.read()

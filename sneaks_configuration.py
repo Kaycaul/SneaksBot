@@ -195,13 +195,13 @@ class SneaksConfiguration:
     ]
 
     # pfps for sneaks to use
-    pfps = [
-      "sneakers.png",
-      "sneaks.png",
-      "sneaks2.png",
-      "sneaks3.png",
-      "sneaks4.png",
-      "sneaks5.png",
-      "sneaks6.png",
-      "sneaks7.png",
-    ]
+    # pfps = [
+    #   "sneakers.png",
+    #   "sneaks.png",
+    #   "sneaks2.png",
+    #   "sneaks3.png",
+    #   "sneaks4.png",
+    #   "sneaks5.png",
+    #   "sneaks6.png",
+    #   "sneaks7.png",
+    # ]
