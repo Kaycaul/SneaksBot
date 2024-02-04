@@ -323,6 +323,10 @@ class Sneaks():
             m = history.pop(0)
             if m.content != message.content or m.author == self.bot.user:
                 return
+            
+        # stop him from spamming blank messages which seems to cause so many errors
+        if message.content == "":
+            return
 
         # contribute to the spam
         print(f'\033[1;35mSpamming \"{message.content}\"')
