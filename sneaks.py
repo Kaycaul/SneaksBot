@@ -422,3 +422,13 @@ class Sneaks():
             # post the message
             await announcements.send(content=content)
         print(f"\033[1;32mFinished art battle recap!")
+
+    async def reaction_image(self, message: discord.Message):
+        if random.randint(0, 180) != 0:
+            return
+        # pick a random file and load it
+        path = random.choice(glob.glob("ReactionImages/*")) 
+        print(f"\033[1;35mSending image {path}")
+        file = discord.File(path)
+        # send it to discord
+        await message.reply(file=file, content="")
