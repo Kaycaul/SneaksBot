@@ -424,7 +424,7 @@ class Sneaks():
         print(f"\033[1;32mFinished art battle recap!")
 
     async def reaction_image(self, message: discord.Message):
-        if random.randint(0, 250) != 0:
+        if random.randint(0, 700) != 0:
             return
         # pick a random file and load it
         path = random.choice(glob.glob("ReactionImages/*")) 
