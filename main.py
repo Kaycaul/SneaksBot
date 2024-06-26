@@ -37,6 +37,7 @@ async def on_message(message: discord.Message):
     await sneaksbot.emote_dump(message) # this was a mistake
     await sneaksbot.art_battle_recap(message)
     await sneaksbot.reaction_image(message)
+    await sneaksbot.eh_ha_heh_heh(message)
 
 keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET")

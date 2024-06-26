@@ -185,6 +185,14 @@ class Sneaks():
       print(f"replying to message from {message.author} with stuff")
       await message.reply(content="im stuff")
 
+    async def eh_ha_heh_heh(self, message):
+      cleaned_message = message.content.lower()
+      if ((not cleaned_message[-3:] == "off") and (not '"off"' in cleaned_message)) or random.randint(0, 5) != 3:
+        return
+      print(f"replying to message from {message.author} with eh? ha! heh heh.")
+      await message.reply(content="eh? ha! heh heh.")
+      await message.add_reaction("<:heh:1248817235129270412>")
+
     async def play_music(self, message):
         # currently broken, opus not loaded, not willing to deal with this lmao
         if (True):
