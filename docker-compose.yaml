@@ -1,0 +1,6 @@
+services:
+  bot:
+    build: .
+    restart: always
+    environment:
+      - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET}

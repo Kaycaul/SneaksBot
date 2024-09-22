@@ -2,7 +2,7 @@ import os
 import discord
 from discord import app_commands
 import asyncio
-from keep_alive import keep_alive
+# from keep_alive import keep_alive
 from sneaks import Sneaks
 
 import bson
@@ -104,6 +104,6 @@ async def post(interaction, url: str, artist: str, tags: str):
         if os.path.exists(save_path):
             os.remove(save_path)
 
-keep_alive()  # Starts a webserver to be pinged.
+# keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET")
 bot.run(token)  # Starts the bot
