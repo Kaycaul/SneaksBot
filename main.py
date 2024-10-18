@@ -61,7 +61,8 @@ async def on_message(message: discord.Message):
 @app_commands.describe(url="the image you want to post (url)")
 @app_commands.describe(artist="name of the artist")
 @app_commands.describe(tags="space-separated tags")
-async def post(interaction, url: str, artist: str, tags: str):
+@app_commands.describe(filename="what to change the filename to")
+async def post(interaction, url: str, artist: str, tags: str, filename: str):
     try:
         # break if user doesnt have doeball uid
         if interaction.user.id != sneaksbot.doeball_uid:
@@ -72,7 +73,8 @@ async def post(interaction, url: str, artist: str, tags: str):
         # regex the image name at the end of the url
         directory = "/public/assets/uploads/"
         file = os.path.basename(url).split("?")[0]
-        save_path = f"{root}{directory}{file}"
+        ext = file.split(".")[1]
+        save_path = f"{root}{directory}{filename}.{ext}"
         print(f"saving the image at {url} to {save_path}")
         # never overwrite
         if (os.path.exists(save_path)):
@@ -90,7 +92,7 @@ async def post(interaction, url: str, artist: str, tags: str):
             # with the new path, put the image path in the database with the metadata
             taglist = tags.split(" ")
             newpost = {
-                "path": f"/assets/uploads/{file}",
+                "path": f"/assets/uploads/{filename}.{ext}",
                 "artist": artist,
                 "tags": taglist,
                 "date": datetime.now(timezone.utc)
