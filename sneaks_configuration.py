@@ -86,7 +86,8 @@ class SneaksConfiguration:
 		"Hitman: World of Assassination",
 		"Vim",
 		"Emacs",
-		"Subway Surfers"
+		"Subway Surfers",
+	    "Peggle Extreme"
     ]
 
     # list of activites that are songs for sneaks to listen to
