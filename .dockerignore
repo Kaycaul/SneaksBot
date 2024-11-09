@@ -1,3 +1,6 @@
 **/__pycache__
 fakeserver
 .env
+.venv
+
+sneaks.bat

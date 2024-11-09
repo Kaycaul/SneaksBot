@@ -1,12 +1,11 @@
 import os
-import discord
-from discord import app_commands
+import discord # type: ignore
+from discord import app_commands # type: ignore
 import asyncio
 # from keep_alive import keep_alive
 from sneaks import Sneaks
 
-import bson
-import pymongo
+import pymongo # type: ignore
 from datetime import datetime, timezone
 import requests
 
@@ -63,30 +62,32 @@ async def on_message(message: discord.Message):
 @app_commands.describe(tags="space-separated tags")
 @app_commands.describe(filename="what to change the filename to")
 async def post(interaction, url: str, artist: str, tags: str, filename: str):
+    await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> Thinking...")
     try:
         # break if user doesnt have doeball uid
         if interaction.user.id != sneaksbot.doeball_uid:
-            await interaction.response.send_message("<:sneakers:1064268113434120243>❌")
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
             return
         # save image to the servers folder (stupid design because sneaksbot wasnt messy enough)
-        root = os.environ.get("MEOW_DOEBALL_CA_ROOT_FOLDER")
+        root = "./"
         # regex the image name at the end of the url
-        directory = "/public/assets/uploads/"
+        directory = "uploads/"
         file = os.path.basename(url).split("?")[0]
         ext = file.split(".")[1]
         save_path = f"{root}{directory}{filename}.{ext}"
         print(f"saving the image at {url} to {save_path}")
         # never overwrite
         if (os.path.exists(save_path)):
-            await interaction.response.send_message("file already exists dumbass rename it or something <:sneakers:1064268113434120243>❌")
+            await interaction.followup.send("file already exists dumbass rename it or something <:sneakers:1064268113434120243>❌")
             return
         with open(save_path, "wb") as handle:
             try:
                 content = requests.get(url).content
                 handle.write(content)
             except Exception as e:
-                await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception accessing url:\n`{e}`")
-                os.remove(save_path)
+                if os.path.exists(save_path):
+                    os.remove(save_path)
+                await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception accessing url:\n`{e}`")
                 return
         try:
             # with the new path, put the image path in the database with the metadata
@@ -98,16 +99,17 @@ async def post(interaction, url: str, artist: str, tags: str, filename: str):
                 "date": datetime.now(timezone.utc)
             }
             _id = artworks_collection.insert_one(newpost)
-            res = f"by {artist}\ntags: {taglist}\nInserted @ {_id.inserted_id}\nhttps://meow.doeball.ca/gallery/{_id.inserted_id}\n<:sneakers:1064268113434120243>✅"
-            await interaction.response.send_message(res)
+            res = f"\"{filename}\" by {artist}\ntags: {taglist}\nInserted @ {_id.inserted_id}\nhttps://meow.doeball.ca/gallery?artist={artist}\n<:sneakers:1064268113434120243>✅"
+            await interaction.followup.send(res)
         except Exception as e:
-            # something went wrong inserting the document
-            await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception inserting document:\n`{e}`")
             # delete the file
             if os.path.exists(save_path):
                 os.remove(save_path)
+            # something went wrong inserting the document
+            await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception inserting document:\n`{e}`")
+            return
     except Exception as e:
-        await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
 
 # keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET")

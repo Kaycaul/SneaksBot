@@ -1,11 +1,11 @@
 import random
-import discord
+import discord # type: ignore
 import time
 import datetime
 from sneaks_configuration import SneaksConfiguration
-from discord.ext import commands
-from discord.utils import get
-from discord import FFmpegPCMAudio
+from discord.ext import commands # type: ignore
+from discord.utils import get # type: ignore
+from discord import FFmpegPCMAudio # type: ignore
 import os
 import asyncio
 import glob
@@ -342,7 +342,7 @@ class Sneaks():
         await message.channel.send(content=message.content)
 
     async def reply_ping(self, message: discord.Message):
-        if "<@1050873792525774921>" in message.content:
+        if f"<@{self.bot.user.id}>" in message.content:
             emote_response = self.emotes[random.choice(
                 self.greeting_reactions)]
             print(f"\033[1;35mReplying to mention from {message.author}")
@@ -364,7 +364,7 @@ class Sneaks():
 
     # copies the most awarded posts from #art-battle to #announcements, on demand
     async def art_battle_recap(self, input: discord.Message):
-        if not input.content.lower() == "<@1050873792525774921> recap":
+        if not input.content.lower() == f"<@{self.bot.user.id}> recap":
             return
         if not input.channel.id == self.announcements_channel:
             return
