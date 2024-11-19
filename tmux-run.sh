@@ -20,8 +20,8 @@ tmux kill-window -t $SESSION:sneaksbot
 tmux new-window -t $SESSION -n sneaksbot
 
 # attach to docker and open a terminal
-tmux split-window -h -t $SESSION:sneaksbot
-tmux send-keys -t $SESSION:sneaksbot.0 "docker attach -it sneaksbot" C-m
+tmux split-window -h -l 38% -t $SESSION:sneaksbot
+tmux send-keys -t $SESSION:sneaksbot.0 "docker attach sneaksbot" C-m
 
 # attach to session if not already in tmux
 if [ -z "$TMUX" ]; then
