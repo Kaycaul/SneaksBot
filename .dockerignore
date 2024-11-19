@@ -4,3 +4,4 @@ fakeserver
 .venv
 
 sneaks.bat
+tmux-run.sh

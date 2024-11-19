@@ -1,12 +1,13 @@
 services:
-  bot:
+  sneaksbot:
     build: .
-    restart: always
+    restart: unless-stopped
     environment:
       - DISCORD_BOT_SECRET=${DISCORD_BOT_SECRET}
     network_mode: "host"
     volumes:
       - gallery_uploads:/bot/uploads
+    container_name: sneaksbot
 
 volumes:
   gallery_uploads:
