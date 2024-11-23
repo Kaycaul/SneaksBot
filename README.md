@@ -7,3 +7,7 @@ its a total mess
 i have no idea how any of it works, and most of the code is awful because i never knew what i was doing, and i never bothered to clean it up
 
 theres a folder with marge simpson voice clips because i didnt know what .gitignore was
+# simple setup
+- install docker and crap
+- docker compose up
+- or use the script
