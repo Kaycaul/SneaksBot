@@ -323,7 +323,7 @@ class SneaksConfiguration:
         |\bbitch\s*ass\b
         |\b(?:bo[iy]|in\sthe)\s*[bp]uss(?:ies|y)\b
         |\bboobs\b
-        |\bbr(?:[aou]+[hv]+|ooo+)\b
+        # |\bbr(?:[aou]+[hv]+|ooo+)\b
         |bush\s*did\s*9.?11
         |\bcaseoh\b
         |cheese\sdrippy
