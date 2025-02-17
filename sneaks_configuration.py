@@ -227,7 +227,7 @@ class SneaksConfiguration:
         |\bbitch\s*ass\b
         |\b(?:bo[iy]|in\sthe)\s*[bp]uss(?:ies|y)\b
         |\bboobs\b
-        |\bbr(?:[aou]+[hv]+|ooo+)\b
+        # |\bbr(?:[aou]+[hv]+|ooo+)\b
         |bush\s*did\s*9.?11
         |\bcaseoh\b
         |cheese\sdrippy
@@ -390,7 +390,6 @@ class SneaksConfiguration:
         |\brizz+(?:\b|e[rd]|ful|ing|l[ey]|y)
         |\brizz\w*\b.{0,40}\bhuzz\b
         |rizzmas
-        |\broblox\b
         |\bs(?:u+i{3,}|i+u{3,})\b
         |s+k+[i1bdt]{4,}y*\b
         |\bs+us+us+\b
@@ -400,11 +399,11 @@ class SneaksConfiguration:
         |[ui]s\s+sus\b
         |\buwu\b
         |\bwo+m+p+\s*wo+m+p+\b
-        |\by+o+l+o[lo]+
+        |\by+o+l+o[lo]+c
         |y\s*o\s*[lo\s]+s\s*w\s*[4ae]+\s*g+
         |\byall\b
         |\b(?:yo)?ur\sm[ou]m\b
-        |\byooo+\b
+        |\byooo+\bm
         |you['`]?ve\s*been\s*gnomed
         |\bmewing\b # why did wikipedia not include this
         |\braise.*(ya+.*){2,}\b # techy says this
