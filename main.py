@@ -51,6 +51,7 @@ async def on_message(message: discord.Message):
     await sneaksbot.art_battle_recap(message)
     await sneaksbot.reaction_image(message)
     await sneaksbot.eh_ha_heh_heh(message)
+    await sneaksbot.brainrot_scan(message)
 
 @bot.tree.command(
     name="post", 

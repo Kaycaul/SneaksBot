@@ -87,7 +87,8 @@ class SneaksConfiguration:
 		"Vim",
 		"Emacs",
 		"Subway Surfers",
-	    "Peggle Extreme"
+	    "Peggle Extreme",
+        "Balatro"
     ]
 
     # list of activites that are songs for sneaks to listen to
@@ -124,7 +125,8 @@ class SneaksConfiguration:
         "the screams of hell",
 		"Initial D Soundtrack",
 		"Mr. Kitty",
-		"Inabakumori"
+		"Inabakumori",
+        "The Weeknd"
     ]
 
     # sneaks should not be able to use these emotes
@@ -206,3 +208,204 @@ class SneaksConfiguration:
     #   "sneaks6.png",
     #   "sneaks7.png",
     # ]
+
+    # brainrot regex, from wikipedia filter 614
+    # it is a vandalism filter... so dont be surprised if it has weird shit
+    brainrot_regex = r"""(?x)
+        \bඞ\b
+        |420\s*b+l+a+z+e+\s*i+t+
+        |absolute\s*unit
+        |[ah]{12,}
+        |amog\s*us+\b
+        |among\s+us\b.{0,20}\b(?:among\s+us|game|impost[eo]r|ohio|sus\b)
+        |amongus+\b
+        |aviation\s*,[\s\S]*?there\s*is\s*no[\s\S]*?bee[\s\S]*?be\s*able\s*to\s*fly
+        |\bayyy+
+        |b+o+iii+
+        |baby\sgronk
+        |balkan\s+breakfast
+        |\bbitch\s*ass\b
+        |\b(?:bo[iy]|in\sthe)\s*[bp]uss(?:ies|y)\b
+        |\bboobs\b
+        |\bbr(?:[aou]+[hv]+|ooo+)\b
+        |bush\s*did\s*9.?11
+        |\bcaseoh\b
+        |cheese\sdrippy
+        |chicken\s*f[u\*]?[c\*]k(?:er|s|ing)?
+        |\bching\s*chong\b
+        |chung[uea]s\b
+        |dQw4w9WgXcQ
+        |(?:d[3e](?:[3e]+[sz]+|[sz][sz]*)e*|th[3e][zs$][3e])\s*n+u+t+[zs$]
+        |(?<![\#\d])(?:69\D{0,3}420|420\D{0,3}69|(?:69\D{0,3}){3,})(?!\d)
+        |dank\s*meme
+        |\bdat\s+boi
+        |(?:dems?|them[`']?s?|those\s+are)[`']?\s+(?:da|th[ea])\s+fa(?:cts|x)
+        |\bdiddler\b
+        |\bdiddy(?:[`']?s)?\W+(?:.{0,80}\b(?:(?:any|no)thing\s*wrong|baby\s*oil)|did\w*\W+did\w*|diddy|free|high|house|i|oil|party|school|studios|volumes)\b
+        |\bdiddys\b
+        |drumpf
+        |e+s+k+e+t+i+t
+        |\beats?\s*ass\b
+        |\b(?:eat|kiss|smack|smell|stick|suck)\w*\s+my\s+(?:arse|ass|balls|big|bog|butt|cock|cum|dic?k|fucking|penis|schlong|shorts|tits|weiner)\b
+        |epst(?:ei|ie)n\W+did\s*n.?t\s+kill
+        |\berm\swhat\b
+        |(?:f[u\*][c\*]k(?:ing?|ed|s)|sex\s*with?)\s*chickens?
+        |f\s*r\s*e\s*e\s*d\s*i\s*d\s*d\s*y
+        |\bfanum\s*tax
+        |\bfem\W?bo[iy]s?\b
+        |fetus\s*deletus
+        |\bg+a+yy(?:y|\b)
+        |german\s+stare
+        |\bgooning\b
+        |\bgriddy\b
+        |gucci\s*gang[\s,]*gucci\s*gang
+        |\bgyat\b
+        |gyatt
+        |\bh(?:ello|i)\smy\sname\b
+        |hard\s+(?:pp|peepee)
+        |hawk.?tua(?:\w?\b|h)
+        |hit\s*or\s*miss[\s,]*I\s*guess
+        |hitler\b.{0,40}\b(?:any|no)thing?\s*wrong
+        |\s*i\s*n\s*t\s*h\s*[ae]\s*p\s*(?:(?:[@uv*]\s*)+(?:[zs\$*]\s*)+|[zs\$*]{2,})\s*a*y+
+        |(?:idi|toilet|what\s+the|ohio)\s+sigma
+        |\bidk\b
+        |impost[eo]rs?\b.{0,20}\b(?:among\sus|sus\b)
+        |is\s+the\s+goat
+        |ishowspeed
+        |jamaican\s+smiling
+        |joe\s+m[oa]m+a
+        |(?<!koe\s)\by+ee+t+(?:e+(?:r+|d+))?\b
+        |l\s*bozo
+        |\bligma\b
+        |lo+(?:w*|w\w*)\s+tap+er\s+fade
+        |\bnibb+a+\b
+        |nick\s*turani
+        |\bnonce\b
+        |ok(?:ay)?,?\s+boomer
+        |\booo+f+\b
+        |\bp\.diddy\b
+        |\b(?:pee+|poo+)\s*(?:pee+|poo+)\b
+        |(?:pp|peepee)\s+hard
+        |\bquandale\b
+        |\br+eeeeee
+        |\b(?:ranboo|tubbo)
+        |rawr\s*xd
+        |\#redirect\s*\[\[donald[\s_]trump\]\]
+        |\brizz+(?:\b|e[rd]|ful|ing|l[ey]|y)
+        |\brizz\w*\b.{0,40}\bhuzz\b
+        |rizzmas
+        |\bs(?:u+i{3,}|i+u{3,})\b
+        |s+k+[i1bdt]{4,}y*\b
+        |\bs+us+us+\b
+        |s+w+[4ae]+gg[g]+
+        |\bsigma(?:aa+\w*|s)\b
+        |sigma\s+(?:boy|male|ohio|rizz\w*|sigma|sk[bdi]+\b|toilet)
+        |skibi[td]{1,2}[iy]
+        |smartschoolboy9
+        |sub(?:scrib(?:e[ds]?|ing))?\s*(?:2|to)\s*(?:p(?:ew|oo|ud|ue|uw)|te*.?series)
+        |\bsussy\b
+        |sw[4ae]g\s*(?:yolo|daddy|money|lord|master)
+        |\#(?:sw[4ae]g|yolo)
+        |\bt+\s*h+\s*i+\s*c\s*c
+        |\bt+r+o+l(?:o+l|ll)
+        |thick\s+of\s+it,?\s*everybody
+        |tran?s?.?manian?\b\bඞ\b
+        |420\s*b+l+a+z+e+\s*i+t+
+        |absolute\s*unit
+        |amog\s*us+\b
+        |among\s+us\b.{0,20}\b(?:among\s+us|game|impost[eo]r|ohio|sus\b)
+        |amongus+\b
+        |aviation\s*,[\s\S]*?there\s*is\s*no[\s\S]*?bee[\s\S]*?be\s*able\s*to\s*fly
+        |\bayyy+
+        |b+o+iii+
+        |baby\sgronk
+        |balkan\s+breakfast
+        |\bbitch\s*ass\b
+        |\b(?:bo[iy]|in\sthe)\s*[bp]uss(?:ies|y)\b
+        |\bboobs\b
+        |\bbr(?:[aou]+[hv]+|ooo+)\b
+        |bush\s*did\s*9.?11
+        |\bcaseoh\b
+        |cheese\sdrippy
+        |chicken\s*f[u\*]?[c\*]k(?:er|s|ing)?
+        |\bching\s*chong\b
+        |chung[uea]s\b
+        |dQw4w9WgXcQ
+        |(?:d[3e](?:[3e]+[sz]+|[sz][sz]*)e*|th[3e][zs$][3e])\s*n+u+t+[zs$]
+        |(?<![\#\d])(?:69\D{0,3}420|420\D{0,3}69|(?:69\D{0,3}){3,})(?!\d)
+        |dank\s*meme
+        |\bdat\s+boi
+        |(?:dems?|them[`']?s?|those\s+are)[`']?\s+(?:da|th[ea])\s+fa(?:cts|x)
+        |\bdiddler\b
+        |\bdiddy(?:[`']?s)?\W+(?:.{0,80}\b(?:(?:any|no)thing\s*wrong|baby\s*oil)|did\w*\W+did\w*|diddy|free|high|house|i|oil|party|school|studios|volumes)\b
+        |\bdiddys\b
+        |drumpf
+        |e+s+k+e+t+i+t
+        |\beats?\s*ass\b
+        |\b(?:eat|kiss|smack|smell|stick|suck)\w*\s+my\s+(?:arse|ass|balls|big|bog|butt|cock|cum|dic?k|fucking|penis|schlong|shorts|tits|weiner)\b
+        |epst(?:ei|ie)n\W+did\s*n.?t\s+kill
+        |\berm\swhat\b
+        |(?:f[u\*][c\*]k(?:ing?|ed|s)|sex\s*with?)\s*chickens?
+        |f\s*r\s*e\s*e\s*d\s*i\s*d\s*d\s*y
+        |\bfanum\s*tax
+        |\bfem\W?bo[iy]s?\b
+        |fetus\s*deletus
+        |\bg+a+yy(?:y|\b)
+        |german\s+stare
+        |\bgooning\b
+        |\bgriddy\b
+        |gucci\s*gang[\s,]*gucci\s*gang
+        |\bgyat\b
+        |gyatt
+        |\bh(?:ello|i)\smy\sname\b
+        |hard\s+(?:pp|peepee)
+        |hawk.?tua(?:\w?\b|h)
+        |hit\s*or\s*miss[\s,]*I\s*guess
+        |hitler\b.{0,40}\b(?:any|no)thing?\s*wrong
+        |\s*i\s*n\s*t\s*h\s*[ae]\s*p\s*(?:(?:[@uv*]\s*)+(?:[zs\$*]\s*)+|[zs\$*]{2,})\s*a*y+
+        |(?:idi|toilet|what\s+the|ohio)\s+sigma
+        |\bidk\b
+        |impost[eo]rs?\b.{0,20}\b(?:among\sus|sus\b)
+        |is\s+the\s+goat
+        |ishowspeed
+        |jamaican\s+smiling
+        |joe\s+m[oa]m+a
+        |(?<!koe\s)\by+ee+t+(?:e+(?:r+|d+))?\b
+        |l\s*bozo
+        |\bligma\b
+        |lo+(?:w*|w\w*)\s+tap+er\s+fade
+        |\bnibb+a+\b
+        |nick\s*turani
+        |\bnonce\b
+        |ok(?:ay)?,?\s+boomer
+        |\booo+f+\b
+        |\bp\.diddy\b
+        |\b(?:pee+|poo+)\s*(?:pee+|poo+)\b
+        |(?:pp|peepee)\s+hard
+        |\bquandale\b
+        |\br+eeeeee
+        |\b(?:ranboo|tubbo)
+        |rawr\s*xd
+        |\#redirect\s*\[\[donald[\s_]trump\]\]
+        |\brizz+(?:\b|e[rd]|ful|ing|l[ey]|y)
+        |\brizz\w*\b.{0,40}\bhuzz\b
+        |rizzmas
+        |\broblox\b
+        |\bs(?:u+i{3,}|i+u{3,})\b
+        |s+k+[i1bdt]{4,}y*\b
+        |\bs+us+us+\b
+        |s+w+[4ae]+gg[g]+
+        |\bsigma(?:aa+\w*|s)\b
+        |ugandan\s*knuckles
+        |[ui]s\s+sus\b
+        |\buwu\b
+        |\bwo+m+p+\s*wo+m+p+\b
+        |\by+o+l+o[lo]+
+        |y\s*o\s*[lo\s]+s\s*w\s*[4ae]+\s*g+
+        |\byall\b
+        |\b(?:yo)?ur\sm[ou]m\b
+        |\byooo+\b
+        |you['`]?ve\s*been\s*gnomed
+        |\bmewing\b # why did wikipedia not include this
+        |\braise.*(ya+.*){2,}\b # techy says this
+        """
