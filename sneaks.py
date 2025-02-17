@@ -9,7 +9,7 @@ from discord import FFmpegPCMAudio # type: ignore
 import os
 import asyncio
 import glob
-
+import re
 
 class Sneaks():
 
@@ -35,6 +35,7 @@ class Sneaks():
     emotes = config.emotes
     greeting_reactions = config.greeting_reactions
     keyword_reactions = config.keyword_reactions
+    brainrot_regex = re.compile(config.brainrot_regex, re.IGNORECASE)
 
     # setting up the bot
     intents = discord.Intents.default()
@@ -440,3 +441,12 @@ class Sneaks():
         file = discord.File(path)
         # send it to discord
         await message.reply(file=file, content="")
+
+    async def brainrot_scan(self, message: discord.Message):
+        # brainrot detection regex courtesy of wikipedia
+        # https://en.wikipedia.org/wiki/Special:AbuseFilter/614
+        capture = self.brainrot_regex.search(message.content)
+        if capture:
+            print(f"Brainrot \"{capture.group(0)}\" caught, by {message.author}")
+            # pick a random file and load it
+            await message.reply(content="erm what the sigma")
