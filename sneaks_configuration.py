@@ -405,4 +405,12 @@ class SneaksConfiguration:
         |you['`]?ve\s*been\s*gnomed
         |\bmewing\b # why did wikipedia not include this
         |\braise.*(ya+.*){2,}\b # techy says this
+        |fine.?sh[iy]t
+        |[(negative)(positive)(l)].?aura
+        |aura.?farming
+        |maxxing\b
+        |\bopps\b
+        |\b[(the)(da)].?drip
+        |\bdrippy.?cheese
+        |\b[(kind)(pretty)].*sus
         """

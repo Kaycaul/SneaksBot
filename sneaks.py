@@ -443,10 +443,11 @@ class Sneaks():
         await message.reply(file=file, content="")
 
     async def brainrot_scan(self, message: discord.Message):
+        # ignore bots (to prevent infinite "what the sigma" mutual recursion)
+        if message.author.bot: return
         # brainrot detection regex courtesy of wikipedia
         # https://en.wikipedia.org/wiki/Special:AbuseFilter/614
         capture = self.brainrot_regex.search(message.content)
         if capture:
             print(f"Brainrot \"{capture.group(0)}\" caught, by {message.author}")
-            # pick a random file and load it
             await message.reply(content="erm what the sigma")
