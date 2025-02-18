@@ -268,7 +268,6 @@ class SneaksConfiguration:
         |hitler\b.{0,40}\b(?:any|no)thing?\s*wrong
         |\s*i\s*n\s*t\s*h\s*[ae]\s*p\s*(?:(?:[@uv*]\s*)+(?:[zs\$*]\s*)+|[zs\$*]{2,})\s*a*y+
         |(?:idi|toilet|what\s+the|ohio)\s+sigma
-        |\bidk\b
         |impost[eo]rs?\b.{0,20}\b(?:among\sus|sus\b)
         |is\s+the\s+goat
         |ishowspeed
@@ -364,7 +363,6 @@ class SneaksConfiguration:
         |hitler\b.{0,40}\b(?:any|no)thing?\s*wrong
         |\s*i\s*n\s*t\s*h\s*[ae]\s*p\s*(?:(?:[@uv*]\s*)+(?:[zs\$*]\s*)+|[zs\$*]{2,})\s*a*y+
         |(?:idi|toilet|what\s+the|ohio)\s+sigma
-        |\bidk\b
         |impost[eo]rs?\b.{0,20}\b(?:among\sus|sus\b)
         |is\s+the\s+goat
         |ishowspeed
