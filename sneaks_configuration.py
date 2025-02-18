@@ -404,7 +404,7 @@ class SneaksConfiguration:
         |\byooo+\bm
         |you['`]?ve\s*been\s*gnomed
         |\bmewing\b # why did wikipedia not include this
-        |\braise.*(ya+.*){2,}\b # techy says this
+        |\brais.*(ye?a+.*){2,}\b # techy says this
         |fine.?sh[iy]t
         |[(negative)(positive)(l)].?aura
         |aura.?farming
@@ -413,4 +413,8 @@ class SneaksConfiguration:
         |\b[(the)(da)].?drip
         |\bdrippy.?cheese
         |\b[(kind)(pretty)].*sus
+        |\bhuzz
+        |\bglizzy
+        |\bshe+sh
+        |\bgirl.?behind.?(yo)?u
         """
