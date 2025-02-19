@@ -215,7 +215,6 @@ class SneaksConfiguration:
         \bඞ\b
         |420\s*b+l+a+z+e+\s*i+t+
         |absolute\s*unit
-        |[ah]{12,}
         |amog\s*us+\b
         |among\s+us\b.{0,20}\b(?:among\s+us|game|impost[eo]r|ohio|sus\b)
         |amongus+\b
@@ -399,7 +398,6 @@ class SneaksConfiguration:
         |\bwo+m+p+\s*wo+m+p+\b
         |\by+o+l+o[lo]+c
         |y\s*o\s*[lo\s]+s\s*w\s*[4ae]+\s*g+
-        |\byall\b
         |\b(?:yo)?ur\sm[ou]m\b
         |\byooo+\bm
         |you['`]?ve\s*been\s*gnomed
