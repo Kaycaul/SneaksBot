@@ -8,6 +8,7 @@ from sneaks import Sneaks
 import pymongo # type: ignore
 from datetime import datetime, timezone
 import requests
+import youtube_dl
 
 print(f"running discord api {discord.__version__}")
 
@@ -53,6 +54,47 @@ async def on_message(message: discord.Message):
     await sneaksbot.eh_ha_heh_heh(message)
     await sneaksbot.brainrot_scan(message)
 
+ytdl_format_options = {
+    'format': 'bestaudio/best',
+    'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+    'restrictfilenames': True,
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': False,
+    'logtostderr': False,
+    'quiet': True,
+    'no_warnings': True,
+    'default_search': 'auto',
+    'source_address': '0.0.0.0',  # bind to ipv4 since ipv6 addresses cause issues sometimes
+}
+
+ffmpeg_options = {
+    'options': '-vn',
+}
+
+ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+
+class YTDLSource(discord.PCMVolumeTransformer):
+    def __init__(self, source, *, data, volume=0.5):
+        super().__init__(source, volume)
+
+        self.data = data
+
+        self.title = data.get('title')
+        self.url = data.get('url')
+
+    @classmethod
+    async def from_url(cls, url, *, loop=None, stream=False):
+        loop = loop or asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+
+        if 'entries' in data:
+            # take first item from a playlist
+            data = data['entries'][0]
+
+        filename = data['url'] if stream else ytdl.prepare_filename(data)
+        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+
 @bot.tree.command(
     name="radiojoin", 
     description="join your vc and play songs forever from the radio",
@@ -60,8 +102,15 @@ async def on_message(message: discord.Message):
 )
 async def radio_join(interaction: discord.Interaction):
     await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> ok")
-    channel = interaction.user.voice.channel
-    vc = await channel.connect()
+    try:
+        channel = interaction.user.voice.channel
+        vc = await channel.connect()
+        player = await YTDLSource.from_url("https://radio.doeball.ca/listen/boing/radio.mp3", loop=bot.loop, stream=True)
+        vc.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
+        await interaction.followup.send("<:sneakers:1064268113434120243> done")
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
+        raise
     
 @bot.tree.command(
     name="post", 
