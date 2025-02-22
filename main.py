@@ -40,7 +40,7 @@ async def on_message(message: discord.Message):
         return
     await sneaksbot.stuff(message)
     await sneaksbot.stuff2(message)
-    await sneaksbot.play_music(message)
+    # await sneaksbot.play_music(message)
     #await sneaksbot.download_video(message)
     await sneaksbot.echo_message(message)
     await sneaksbot.react_random(message)
@@ -53,6 +53,16 @@ async def on_message(message: discord.Message):
     await sneaksbot.eh_ha_heh_heh(message)
     await sneaksbot.brainrot_scan(message)
 
+@bot.tree.command(
+    name="radiojoin", 
+    description="join your vc and play songs forever from the radio",
+    guild=discord.Object(id=923788487562493982)
+)
+async def radio_join(interaction: discord.Interaction):
+    await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> ok")
+    channel = interaction.user.voice.channel
+    vc = await channel.connect()
+    
 @bot.tree.command(
     name="post", 
     description="Posts an art image to my website and it only works for my account hahahaha",
