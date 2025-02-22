@@ -1,3 +1,4 @@
+from logging import config
 import os
 import discord # type: ignore
 from discord import app_commands # type: ignore
@@ -9,6 +10,7 @@ import pymongo # type: ignore
 from datetime import datetime, timezone
 import requests
 import youtube_dl
+from sneaks_configuration import SneaksConfiguration
 
 print(f"running discord api {discord.__version__}")
 
@@ -20,6 +22,7 @@ artworks_collection = db["artworks"]
 # create a new sneaksbot
 sneaksbot = Sneaks()
 bot = sneaksbot.bot
+sneaks_config = SneaksConfiguration()
 
 @bot.event
 async def on_ready():  # When the bot is ready
@@ -54,6 +57,7 @@ async def on_message(message: discord.Message):
     await sneaksbot.eh_ha_heh_heh(message)
     await sneaksbot.brainrot_scan(message)
 
+# I HAVE NO IDEA HOW THE RADIO CODE WORKS BUT IT WORKS
 ytdl_format_options = {
     'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
@@ -74,6 +78,8 @@ ffmpeg_options = {
 
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
+# ????????????????????????????????????
+# this is a miracle from god
 class YTDLSource(discord.PCMVolumeTransformer):
     def __init__(self, source, *, data, volume=0.5):
         super().__init__(source, volume)
@@ -105,8 +111,9 @@ async def radio_join(interaction: discord.Interaction):
     try:
         channel = interaction.user.voice.channel
         vc = await channel.connect()
-        player = await YTDLSource.from_url("https://radio.doeball.ca/listen/boing/radio.mp3", loop=bot.loop, stream=True)
-        vc.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
+        # i think this makes a new one each time and leaks the previous one or something... idk how it works
+        radio_player = await YTDLSource.from_url(sneaks_config.radio_url, loop=bot.loop, stream=True)
+        vc.play(radio_player, after=lambda e: print(f'Player error: {e}') if e else None)
         await interaction.followup.send("<:sneakers:1064268113434120243> done")
     except Exception as e:
         await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
