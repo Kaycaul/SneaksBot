@@ -119,6 +119,23 @@ async def radio_join(interaction: discord.Interaction):
     except Exception as e:
         await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
         raise
+
+@bot.tree.command(
+    name="radioleave", 
+    description="disconnect the bot from a vc",
+    guild=discord.Object(id=923788487562493982)
+)
+async def radio_leave(interaction: discord.Interaction):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> ok")
+    user_vc = interaction.user.voice.channel
+    if user_vc:
+        # find the vc in my clients
+        for client in bot.voice_clients:
+            if client.channel == user_vc:
+                await client.disconnect()
+                await interaction.followup.send("<:sneakers:1064268113434120243>👍")
+                return
+    await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ u gotta be in vc with me bro")
     
 @bot.tree.command(
     name="post", 
@@ -130,7 +147,7 @@ async def radio_join(interaction: discord.Interaction):
 @app_commands.describe(tags="space-separated tags")
 @app_commands.describe(filename="what to change the filename to")
 async def post(interaction, url: str, artist: str, tags: str, filename: str):
-    await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> Thinking...")
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> Thinking...")
     try:
         # break if user doesnt have doeball uid
         if interaction.user.id != sneaksbot.doeball_uid:
