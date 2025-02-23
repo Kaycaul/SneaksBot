@@ -209,8 +209,6 @@ class SneaksConfiguration:
     #   "sneaks7.png",
     # ]
 
-    radio_url = "http://127.0.0.1:8000/radio.mp3" # edit this to point to azuracast:8000/radio.mp3
-    
     # brainrot regex, from wikipedia filter 614
     # it is a vandalism filter... so dont be surprised if it has weird shit
     brainrot_regex = r"""(?x)

@@ -22,7 +22,6 @@ artworks_collection = db["artworks"]
 # create a new sneaksbot
 sneaksbot = Sneaks()
 bot = sneaksbot.bot
-sneaks_config = SneaksConfiguration()
 
 @bot.event
 async def on_ready():  # When the bot is ready
@@ -101,6 +100,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
+# https://github.com/Rapptz/discord.py/blob/master/examples/basic_voice.py
 @bot.tree.command(
     name="radiojoin", 
     description="join your vc and play songs forever from the radio",
@@ -109,10 +109,11 @@ class YTDLSource(discord.PCMVolumeTransformer):
 async def radio_join(interaction: discord.Interaction):
     await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> ok")
     try:
+        radio_url = os.environ.get("RADIO_URL")
         channel = interaction.user.voice.channel
         vc = await channel.connect()
         # i think this makes a new one each time and leaks the previous one or something... idk how it works
-        radio_player = await YTDLSource.from_url(sneaks_config.radio_url, loop=bot.loop, stream=True)
+        radio_player = await YTDLSource.from_url(radio_url, loop=bot.loop, stream=True)
         vc.play(radio_player, after=lambda e: print(f'Player error: {e}') if e else None)
         await interaction.followup.send("<:sneakers:1064268113434120243> done")
     except Exception as e:
