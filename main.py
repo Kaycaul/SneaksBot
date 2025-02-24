@@ -113,6 +113,7 @@ async def now_playing(interaction: discord.Interaction):
         res = await asyncio.to_thread(requests.get, nowplaying_url)
         if not res.status_code == 200:
             await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ response code: `{res.status_code}`")
+            return
         response_data = res.json()[0]
         song = response_data["now_playing"]["song"]
         emb = discord.Embed(title="Now Playing", description=song["text"]) # title and artist together
