@@ -5,6 +5,7 @@ from discord import app_commands # type: ignore
 import asyncio
 # from keep_alive import keep_alive
 from sneaks import Sneaks
+import requests
 
 import pymongo # type: ignore
 from datetime import datetime, timezone
@@ -99,6 +100,27 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+
+@bot.tree.command(
+    name="nowplaying", 
+    description="what is currently playing on the radio?",
+    guild=discord.Object(id=923788487562493982)
+)
+async def now_playing(interaction: discord.Interaction):
+    try:
+        # request the radio url from {url}/api/nowplaying/ (only works for azuracast)
+        nowplaying_url = os.environ.get("NOWPLAYING_URL")
+        res = await asyncio.to_thread(requests.get, nowplaying_url)
+        if not res.status_code == 200:
+            await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ response code: `{res.status_code}`")
+        response_data = res.json()[0]
+        song = response_data["now_playing"]["song"]
+        emb = discord.Embed(title="Now Playing", description=song["text"]) # title and artist together
+        emb.set_image(url=song["art"])
+        await interaction.response.send_message(embed=emb)
+    except Exception as e:
+        await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
+        raise
 
 # https://github.com/Rapptz/discord.py/blob/master/examples/basic_voice.py
 @bot.tree.command(
