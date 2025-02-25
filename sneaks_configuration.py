@@ -415,4 +415,5 @@ class SneaksConfiguration:
         |\bglizzy
         |\bshe+sh
         |\bgirl.?behind.?(yo)?u
+        |goon # literally anything that contains this
         """

@@ -117,7 +117,7 @@ async def now_playing(interaction: discord.Interaction):
         response_data = res.json()[0]
         song = response_data["now_playing"]["song"]
         emb = discord.Embed(title="Now Playing", description=song["text"]) # title and artist together
-        emb.set_image(url=song["art"])
+        emb.set_thumbnail(url=song["art"])
         await interaction.response.send_message(embed=emb)
     except Exception as e:
         await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
@@ -130,17 +130,20 @@ async def now_playing(interaction: discord.Interaction):
     guild=discord.Object(id=923788487562493982)
 )
 async def radio_join(interaction: discord.Interaction):
-    await interaction.response.send_message(content=f"<:sneakers:1064268113434120243> ok")
     try:
         radio_url = os.environ.get("RADIO_URL")
-        channel = interaction.user.voice.channel
+        voice = interaction.user.voice
+        if not voice:
+            await interaction.response.send_message("<:sneakers:1064268113434120243>❌ join vc first")
+            return
+        channel = voice.channel
         vc = await channel.connect()
         # i think this makes a new one each time and leaks the previous one or something... idk how it works
         radio_player = await YTDLSource.from_url(radio_url, loop=bot.loop, stream=True)
         vc.play(radio_player, after=lambda e: print(f'Player error: {e}') if e else None)
-        await interaction.followup.send("<:sneakers:1064268113434120243> done")
+        await interaction.response.send_message("<:sneakers:1064268113434120243> done")
     except Exception as e:
-        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
+        await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")
         raise
 
 @bot.tree.command(
@@ -149,16 +152,15 @@ async def radio_join(interaction: discord.Interaction):
     guild=discord.Object(id=923788487562493982)
 )
 async def radio_leave(interaction: discord.Interaction):
-    await interaction.response.send_message(content="<:sneakers:1064268113434120243> ok")
     user_vc = interaction.user.voice.channel
     if user_vc:
         # find the vc in my clients
         for client in bot.voice_clients:
             if client.channel == user_vc:
                 await client.disconnect()
-                await interaction.followup.send("<:sneakers:1064268113434120243>👍")
+                await interaction.response.send_message("<:sneakers:1064268113434120243>👍")
                 return
-    await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ u gotta be in vc with me bro")
+    await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ u gotta be in vc with me bro")
     
 @bot.tree.command(
     name="post", 
