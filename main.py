@@ -3,6 +3,7 @@ import os
 import discord # type: ignore
 from discord import app_commands # type: ignore
 import asyncio
+from websockets.asyncio.client import connect
 # from keep_alive import keep_alive
 from sneaks import Sneaks
 import requests
