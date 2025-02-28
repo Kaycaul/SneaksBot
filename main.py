@@ -118,8 +118,7 @@ async def now_playing(interaction: discord.Interaction):
             return
         response_data = res.json()[0]
         song = response_data["now_playing"]["song"]
-        emb = discord.Embed(title="Now Playing", description=song["text"]) # title and artist together
-        emb.set_thumbnail(url=song["art"])
+        emb = sneaksbot.get_nowplaying_embed(song)
         await interaction.response.send_message(embed=emb)
     except Exception as e:
         await interaction.response.send_message(f"<:sneakers:1064268113434120243>❌ exception:\n```\n{e}```")

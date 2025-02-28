@@ -181,12 +181,14 @@ class Sneaks():
         print(f"replying to message from {message.author} with i cant take it")
         await message.reply(content=f"haha {message.author.name} i cant fucking take it anymore")
 
+
     async def stuff(self, message):
       cleaned_message = message.content.lower()
       if ((not cleaned_message[-5:] == "stuff") and (not "doing stuff" in cleaned_message)) or random.randint(0, 5) != 3:
         return
       print(f"replying to message from {message.author} with stuff")
       await message.reply(content="im stuff")
+
 
     async def eh_ha_heh_heh(self, message):
       cleaned_message = message.content.lower()
@@ -195,6 +197,7 @@ class Sneaks():
       print(f"replying to message from {message.author} with eh? ha! heh heh.")
       await message.reply(content="eh? ha! heh heh.")
       await message.add_reaction("<:heh:1248817235129270412>")
+
 
     async def play_music(self, message):
         # currently broken, opus not loaded, not willing to deal with this lmao
@@ -248,6 +251,7 @@ class Sneaks():
         os.remove(f"Songs\\{received_time}.mp3")
         await voice.disconnect()
 
+
     async def download_video(self, message):
         prefix = "download "
         prefix_length = len(prefix)
@@ -278,6 +282,7 @@ class Sneaks():
         # i cant beleive this just works its a miracle
         print(f"\033[1;35mDownloaded: {message.content[prefix_length:]}")
 
+
     async def echo_message(self, message: discord.Message):
         # echo messages
         if not message.content[0:5] == "echo ":
@@ -291,6 +296,7 @@ class Sneaks():
         await message.channel.send(content=text)
         print(f'\033[1;35mEchoed \"{text}\" from {message.author}')
         await message.delete()
+
 
     async def react_random(self, message: discord.Message):
 
@@ -310,6 +316,7 @@ class Sneaks():
                 activity=discord.Game(message.content)
             )  # use it as your status for now, it will be updated in like 10 minutes
 
+
     async def react_keywords(self, message: discord.Message):
         # react to keywords
         for keyword in self.keyword_reactions.keys():
@@ -325,6 +332,7 @@ class Sneaks():
                     f'\033[1;35mReacting to \"{message.content}\" with {value}'
                 )
                 await message.add_reaction(value)
+
 
     async def chain_message(self, message: discord.Message):
 
@@ -344,12 +352,14 @@ class Sneaks():
         print(f'\033[1;35mSpamming \"{message.content}\"')
         await message.channel.send(content=message.content)
 
+
     async def reply_ping(self, message: discord.Message):
         if f"<@{self.bot.user.id}>" in message.content:
             emote_response = self.emotes[random.choice(
                 self.greeting_reactions)]
             print(f"\033[1;35mReplying to mention from {message.author}")
             await message.reply(content=emote_response * random.randint(1, 3))
+
 
     # prints every emote, mostly for testing but also probably funny
     async def emote_dump(self, message: discord.Message):
@@ -364,6 +374,7 @@ class Sneaks():
                 await message.reply(content=message_to_send)
                 message_to_send = ""
         await message.reply(content=message_to_send)
+
 
     # copies the most awarded posts from #art-battle to #announcements, on demand
     async def art_battle_recap(self, input: discord.Message):
@@ -434,6 +445,7 @@ class Sneaks():
             await announcements.send(content=content)
         print(f"\033[1;32mFinished art battle recap!")
 
+
     async def reaction_image(self, message: discord.Message):
         if random.randint(0, 700) != 0:
             return
@@ -443,6 +455,7 @@ class Sneaks():
         file = discord.File(path)
         # send it to discord
         await message.reply(file=file, content="")
+
 
     async def brainrot_scan(self, message: discord.Message):
         # ignore bots (to prevent infinite "what the sigma" mutual recursion)
@@ -454,18 +467,53 @@ class Sneaks():
             print(f"Brainrot \"{capture.group(0)}\" caught, by {message.author}")
             await message.reply(content="erm what the sigma")
 
+
     # https://www.azuracast.com/docs/developers/now-playing-data/
+    # called at the start to loop forever, searching for nowplaying updates
     async def open_websocket(self):
-        # get socket url from env file
-        websocket_url = os.environ.get("WEBSOCKET_URL")
-        async with connect(websocket_url) as websocket:
-            # connect to socket
-            await websocket.send(json.dumps({ "subs": { "station:boing": {} }}))
-            while True:
-                # wait for new data
-                res = json.loads(await websocket.recv())
-                # respond to nowplaying data, print if song id has changed
-                if ("pub" in res):
-                    nowplaying_data = res["pub"]["data"]["np"]["now_playing"]
-                    song = nowplaying_data["song"]
-                    print(song["text"])
+        # lol i dont think ive ever indented something this much
+        while True:
+            try:
+                # get socket url from env file
+                websocket_url = os.environ.get("WEBSOCKET_URL")
+                async with connect(websocket_url) as websocket:
+                    # connect to socket
+                    await websocket.send(json.dumps({ "subs": { "station:boing": {} }}))
+                    previous_song_id = None
+                    while True:
+                        # wait for new data
+                        res = json.loads(await websocket.recv())
+                        # respond to nowplaying data, print if song id has changed
+                        if "pub" not in res: continue
+                        nowplaying_data = res["pub"]["data"]["np"]["now_playing"]
+                        song = nowplaying_data["song"]
+                        if previous_song_id == song["id"]: continue
+                        previous_song_id = song["id"]
+                        await self.post_nowplaying_update(song)
+            except Exception as e:
+                print(e)
+
+
+    # post an embed into the designated channel
+    async def post_nowplaying_update(self, song):
+        # only update if users are in vc in the cafe server with the bot
+        anyone_listening = False
+        for client in self.bot.voice_clients:
+            if client.guild.id != self.cafe_guild_id: continue
+            if len(client.channel.members) < 2: continue
+            anyone_listening = True
+            break
+        if not anyone_listening: return
+        # post the update
+        designated_channel_id = self.config.radio_nowplaying_channel_id
+        channel = self.bot.get_channel(designated_channel_id)
+        emb = self.get_nowplaying_embed(song)
+        await channel.send(embed=emb)
+
+
+    # takes song json from nowplaying api and returns the appropriate embed to represent it
+    # called by websocket update and manually by users
+    def get_nowplaying_embed(self, song):
+        emb = discord.Embed(title="Now Playing", description=song["text"], color=discord.Color.blue()) # title and artist together
+        emb.set_thumbnail(url=song["art"])
+        return emb
