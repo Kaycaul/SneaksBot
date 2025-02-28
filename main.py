@@ -3,7 +3,6 @@ import os
 import discord # type: ignore
 from discord import app_commands # type: ignore
 import asyncio
-from websockets.asyncio.client import connect
 # from keep_alive import keep_alive
 from sneaks import Sneaks
 import requests
@@ -31,6 +30,8 @@ async def on_ready():  # When the bot is ready
     await sneaksbot.update_known_emotes()
     # sync slash commands
     await bot.tree.sync(guild=discord.Object(id=923788487562493982))
+    # open websocket to get nowplaying data from radio
+    await sneaksbot.open_websocket()
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
         #await sneaksbot.update_active_role(3600) # this will recur every hour

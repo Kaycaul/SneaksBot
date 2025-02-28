@@ -1,3 +1,4 @@
+import json
 import random
 import discord # type: ignore
 import time
@@ -8,6 +9,7 @@ from discord.utils import get # type: ignore
 from discord import FFmpegPCMAudio # type: ignore
 import os
 import asyncio
+from websockets.asyncio.client import connect
 import glob
 import re
 
@@ -451,3 +453,19 @@ class Sneaks():
         if capture:
             print(f"Brainrot \"{capture.group(0)}\" caught, by {message.author}")
             await message.reply(content="erm what the sigma")
+
+    # https://www.azuracast.com/docs/developers/now-playing-data/
+    async def open_websocket(self):
+        # get socket url from env file
+        websocket_url = os.environ.get("WEBSOCKET_URL")
+        async with connect(websocket_url) as websocket:
+            # connect to socket
+            await websocket.send(json.dumps({ "subs": { "station:boing": {} }}))
+            while True:
+                # wait for new data
+                res = json.loads(await websocket.recv())
+                # respond to nowplaying data, print if song id has changed
+                if ("pub" in res):
+                    nowplaying_data = res["pub"]["data"]["np"]["now_playing"]
+                    song = nowplaying_data["song"]
+                    print(song["text"])
