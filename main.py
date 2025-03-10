@@ -31,7 +31,9 @@ async def on_ready():  # When the bot is ready
     # sync slash commands
     await bot.tree.sync(guild=discord.Object(id=923788487562493982))
     # open websocket to get nowplaying data from radio
-    await sneaksbot.open_websocket()
+    background_tasks = set()
+    task = asyncio.create_task(sneaksbot.open_websocket())
+    background_tasks.add(task) # prevent the task from being garbage collected
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
         #await sneaksbot.update_active_role(3600) # this will recur every hour
