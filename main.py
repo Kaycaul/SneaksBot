@@ -61,6 +61,16 @@ async def on_message(message: discord.Message):
     await sneaksbot.eh_ha_heh_heh(message)
     await sneaksbot.brainrot_scan(message)
 
+@bot.event
+async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
+    # disconnect if the channel the user was in, is the channel i am in, and if nobody is left now
+    for client in bot.voice_clients:
+        if before.channel != client.channel: continue
+        # we found the channel the user just left
+        if len(client.channel.members) == 1: # nobody else is left
+            await client.disconnect()
+            return
+
 # I HAVE NO IDEA HOW THE RADIO CODE WORKS BUT IT WORKS
 ytdl_format_options = {
     'format': 'bestaudio/best',
