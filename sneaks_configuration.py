@@ -408,7 +408,7 @@ class SneaksConfiguration:
         |\brais.*(ye?a+.*){2,}\b # techy says this
         |fine.?sh[iy]t
         |[(negative)(positive)(l)].?aura
-        |aura.?farming
+        |aura.?farm
         |maxxing\b
         |\bopps\b
         |\b[(the)(da)].?drip
