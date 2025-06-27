@@ -8,6 +8,8 @@ from sneaks import Sneaks
 import requests
 
 import pymongo # type: ignore
+from bson.objectid import ObjectId
+from pymongo.results import UpdateResult
 from datetime import datetime, timezone
 import requests
 import youtube_dl
@@ -184,7 +186,7 @@ async def radio_leave(interaction: discord.Interaction):
 @app_commands.describe(artist="name of the artist")
 @app_commands.describe(tags="space-separated tags")
 @app_commands.describe(filename="what to change the filename to")
-async def post(interaction, url: str, artist: str, tags: str, filename: str):
+async def post(interaction: discord.Interaction, url: str, artist: str, tags: str, filename: str):
     await interaction.response.send_message(content="<:sneakers:1064268113434120243> Thinking...")
     try:
         # break if user doesnt have doeball uid
@@ -231,6 +233,26 @@ async def post(interaction, url: str, artist: str, tags: str, filename: str):
             # something went wrong inserting the document
             await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception inserting document:\n`{e}`")
             return
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+
+@bot.tree.command(
+    name="add_tag_gallery", 
+    description="add a tag to a gallery post (doeball only)",
+    guild=discord.Object(id=923788487562493982)
+)
+@app_commands.describe(object_id="the mongodb object id of the post")
+@app_commands.describe(tag_name="the tag to add")
+async def post(interaction: discord.Interaction, object_id: str, tag_name: str):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> urrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr...")
+    try:
+        # break if user doesnt have doeball uid
+        if interaction.user.id != sneaksbot.doeball_uid:
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
+            return
+        # with the new path, put the image path in the database with the metadata
+        artworks_collection.update_one({"_id": ObjectId(object_id)}, {"$push": {"tags": tag_name}})
+        await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
     except Exception as e:
         await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
 
