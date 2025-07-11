@@ -250,8 +250,83 @@ async def post(interaction: discord.Interaction, object_id: str, tag_name: str):
         if interaction.user.id != sneaksbot.doeball_uid:
             await interaction.followup.send("<:sneakers:1064268113434120243>❌")
             return
-        # with the new path, put the image path in the database with the metadata
         artworks_collection.update_one({"_id": ObjectId(object_id)}, {"$push": {"tags": tag_name}})
+        await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+
+@bot.tree.command(
+    name="remove_tag_gallery", 
+    description="remove a tag from a gallery post (doeball only)",
+    guild=discord.Object(id=923788487562493982)
+)
+@app_commands.describe(object_id="the mongodb object id of the post")
+@app_commands.describe(tag_name="the tag to remove")
+async def post(interaction: discord.Interaction, object_id: str, tag_name: str):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> urrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr...")
+    try:
+        # break if user doesnt have doeball uid
+        if interaction.user.id != sneaksbot.doeball_uid:
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
+            return
+        artworks_collection.update_one({"_id": ObjectId(object_id)}, {"$pull": {"tags": tag_name}})
+        await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+
+@bot.tree.command(
+    name="replace_tag_gallery", 
+    description="rename a tag on the gallery (doeball only)",
+    guild=discord.Object(id=923788487562493982)
+)
+@app_commands.describe(old_tag_name="the tag to replace (old name)")
+@app_commands.describe(new_tag_name="the tag to replace with (new name)")
+async def post(interaction: discord.Interaction, old_tag_name: str, new_tag_name: str):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> urrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr...")
+    try:
+        # break if user doesnt have doeball uid
+        if interaction.user.id != sneaksbot.doeball_uid:
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
+            return
+        artworks_collection.update_many({"tags": old_tag_name}, {"$set": {"tags.$": new_tag_name}})
+        await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+
+@bot.tree.command(
+    name="update_post_artist_gallery", 
+    description="change the artist name attached to a single post (doeball only)",
+    guild=discord.Object(id=923788487562493982)
+)
+@app_commands.describe(object_id="the mongodb object id of the post")
+@app_commands.describe(new_name="the new artist name")
+async def post(interaction: discord.Interaction, object_id: str, new_name: str):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> urrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr...")
+    try:
+        # break if user doesnt have doeball uid
+        if interaction.user.id != sneaksbot.doeball_uid:
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
+            return
+        artworks_collection.update_one({"_id": ObjectId(object_id)}, {"$set": {"artist": new_name}})
+        await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
+    except Exception as e:
+        await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
+
+@bot.tree.command(
+    name="rename_artist_gallery", 
+    description="change the name of an artist across all posts (doeball only)",
+    guild=discord.Object(id=923788487562493982)
+)
+@app_commands.describe(old_name="the name of the artist to rename")
+@app_commands.describe(new_name="the new artist name")
+async def post(interaction: discord.Interaction, old_name: str, new_name: str):
+    await interaction.response.send_message(content="<:sneakers:1064268113434120243> urrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr...")
+    try:
+        # break if user doesnt have doeball uid
+        if interaction.user.id != sneaksbot.doeball_uid:
+            await interaction.followup.send("<:sneakers:1064268113434120243>❌")
+            return
+        artworks_collection.update_many({"artist": old_name}, {"$set": {"artist": new_name}})
         await interaction.followup.send("done\n<:sneakers:1064268113434120243>✅")
     except Exception as e:
         await interaction.followup.send(f"<:sneakers:1064268113434120243>❌ exception:\n`{e}`")
