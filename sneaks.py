@@ -17,6 +17,7 @@ class Sneaks():
 
     # initial values
     doeball_uid = 692583640538021908
+    bingus_uid = 384143694737178628
     cafe_guild_id = 923788487562493982
     active_role_id = 1054661101029179453
     art_battle_channel = 923801808512647210

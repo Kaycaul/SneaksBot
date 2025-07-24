@@ -46,6 +46,10 @@ async def on_ready():  # When the bot is ready
 
 @bot.event
 async def on_message(message: discord.Message):
+    bingus = await bot.fetch_user(sneaksbot.bingus_uid)
+    await bingus.send("https://cdn.discordapp.com/attachments/1286924606049091717/1341669602165522505/iFunny_-_1892068382528204856.gif?ex=68828670&is=688134f0&hm=15c2f5e59a7e244440576c97a4a83f2709dbdf35231f2bc7a62fe7d4fb947656&")
+    doeball = await bot.fetch_user(sneaksbot.doeball_uid)
+    await doeball.send("https://cdn.discordapp.com/attachments/1286924606049091717/1341669602165522505/iFunny_-_1892068382528204856.gif?ex=68828670&is=688134f0&hm=15c2f5e59a7e244440576c97a4a83f2709dbdf35231f2bc7a62fe7d4fb947656&")
     if message.author == bot.user:
         return
     await sneaksbot.stuff(message)
