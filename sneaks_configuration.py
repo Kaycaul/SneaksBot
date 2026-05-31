@@ -1,6 +1,7 @@
 # i dont want to refactor the name but this is basically a constants file
 class SneaksConfiguration:
     radio_nowplaying_channel_id = 1055551891368575017 # this is the bot-spam channel
+    art_gifts_recap_channel_id = 1497637224835973382
     
     greeting_reactions = ["bl", "boil", "hard", "matt", "sack", "gloglet", "sneakers"]
 

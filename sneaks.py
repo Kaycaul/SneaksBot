@@ -19,7 +19,6 @@ class Sneaks():
     doeball_uid = 692583640538021908
     cafe_guild_id = 923788487562493982
     active_role_id = 1054661101029179453
-    art_battle_channel = 923801808512647210
     announcements_channel = 923813516970975282
     reaction_chance = 299
     keyword_reaction_chance = 2
@@ -32,6 +31,7 @@ class Sneaks():
     ]  # this will contain every emote and emoji sneaks has access to
     # config and configs
     config = SneaksConfiguration()
+    art_battle_channel = config.art_gifts_recap_channel_id
     activities_playing = config.activities_playing
     activities_listening = config.activities_listening
     emotes = config.emotes
