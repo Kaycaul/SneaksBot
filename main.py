@@ -35,11 +35,11 @@ async def on_ready():  # When the bot is ready
     # open websocket to get nowplaying data from radio
     background_tasks = set()
     task = asyncio.create_task(sneaksbot.open_websocket())
-    background_tasks.add(task) # prevent the task from being garbage collected
+    background_tasks.add(task)  # prevent the task from being garbage collected
     # begin all the infinitely looping coroutines, execute them once per second
     while True:
-        #await sneaksbot.update_active_role(3600) # this will recur every hour
-        await sneaksbot.update_status(600) # this will recur every 10 minutes
+        # await sneaksbot.update_active_role(3600) # this will recur every hour
+        await sneaksbot.update_status(600)  # this will recur every 10 minutes
         await sneaksbot.update_profile(3000)
         await asyncio.sleep(1)
 
@@ -51,17 +51,24 @@ async def on_message(message: discord.Message):
     await sneaksbot.stuff(message)
     await sneaksbot.stuff2(message)
     # await sneaksbot.play_music(message)
-    #await sneaksbot.download_video(message)
+    # await sneaksbot.download_video(message)
     await sneaksbot.echo_message(message)
     await sneaksbot.react_random(message)
     await sneaksbot.react_keywords(message)
     await sneaksbot.chain_message(message)
     await sneaksbot.reply_ping(message)
-    await sneaksbot.emote_dump(message) # this was a mistake
+    await sneaksbot.emote_dump(message)  # this was a mistake
     await sneaksbot.art_battle_recap(message)
     await sneaksbot.reaction_image(message)
     await sneaksbot.eh_ha_heh_heh(message)
     await sneaksbot.brainrot_scan(message)
+    await sneaksbot.check_embed_fail(message)
+
+
+@bot.event
+async def on_message_edit(before: discord.Message, after: discord.Message):
+    pass
+
 
 @bot.event
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):

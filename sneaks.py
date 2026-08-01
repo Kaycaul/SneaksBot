@@ -13,6 +13,7 @@ from websockets.asyncio.client import connect
 import glob
 import re
 
+
 class Sneaks():
 
     # initial values
@@ -70,7 +71,6 @@ class Sneaks():
         )
 
     # on_ready events, occur inside a loop
-
     async def update_profile(self, frequency):
         # return if too early
         if time.time() - self.update_profile_timestamp < frequency:
@@ -174,35 +174,31 @@ class Sneaks():
         self.update_active_role_timestamp = time.time()
 
     # on_message events
-
     async def stuff2(self, message):
-      cleaned_message = message.content.lower()
-      if "im stuff" in cleaned_message and random.randint(0, 5) == 0:
-        print(f"replying to message from {message.author} with i cant take it")
-        await message.reply(content=f"haha {message.author.name} i cant fucking take it anymore")
-
+        cleaned_message = message.content.lower()
+        if "im stuff" in cleaned_message and random.randint(0, 5) == 0:
+            print(f"replying to message from {message.author} with i cant take it")
+            await message.reply(content=f"haha {message.author.name} i cant fucking take it anymore")
 
     async def stuff(self, message):
-      cleaned_message = message.content.lower()
-      if ((not cleaned_message[-5:] == "stuff") and (not "doing stuff" in cleaned_message)) or random.randint(0, 5) != 3:
-        return
-      print(f"replying to message from {message.author} with stuff")
-      await message.reply(content="im stuff")
-
+        cleaned_message = message.content.lower()
+        if ((not cleaned_message[-5:] == "stuff") and (not "doing stuff" in cleaned_message)) or random.randint(0, 5) != 3:
+            return
+        print(f"replying to message from {message.author} with stuff")
+        await message.reply(content="im stuff")
 
     async def eh_ha_heh_heh(self, message):
-      cleaned_message = message.content.lower()
-      if ((not cleaned_message[-3:] == "off") and (not '"off"' in cleaned_message)) or random.randint(0, 5) != 3:
-        return
-      print(f"replying to message from {message.author} with eh? ha! heh heh.")
-      await message.reply(content="eh? ha! heh heh.")
-      await message.add_reaction("<:heh:1248817235129270412>")
-
+        cleaned_message = message.content.lower()
+        if ((not cleaned_message[-3:] == "off") and (not '"off"' in cleaned_message)) or random.randint(0, 5) != 3:
+            return
+        print(f"replying to message from {message.author} with eh? ha! heh heh.")
+        await message.reply(content="eh? ha! heh heh.")
+        await message.add_reaction("<:heh:1248817235129270412>")
 
     async def play_music(self, message):
         # currently broken, opus not loaded, not willing to deal with this lmao
         if (True):
-          return
+            return
         ##############
         ##############
         prefix = "sneaksplay "
@@ -251,7 +247,6 @@ class Sneaks():
         os.remove(f"Songs\\{received_time}.mp3")
         await voice.disconnect()
 
-
     async def download_video(self, message):
         prefix = "download "
         prefix_length = len(prefix)
@@ -282,7 +277,6 @@ class Sneaks():
         # i cant beleive this just works its a miracle
         print(f"\033[1;35mDownloaded: {message.content[prefix_length:]}")
 
-
     async def echo_message(self, message: discord.Message):
         # echo messages
         if not message.content[0:5] == "echo ":
@@ -296,7 +290,6 @@ class Sneaks():
         await message.channel.send(content=text)
         print(f'\033[1;35mEchoed \"{text}\" from {message.author}')
         await message.delete()
-
 
     async def react_random(self, message: discord.Message):
 
@@ -316,7 +309,6 @@ class Sneaks():
                 activity=discord.Game(message.content)
             )  # use it as your status for now, it will be updated in like 10 minutes
 
-
     async def react_keywords(self, message: discord.Message):
         # react to keywords
         for keyword in self.keyword_reactions.keys():
@@ -333,7 +325,6 @@ class Sneaks():
                 )
                 await message.add_reaction(value)
 
-
     async def chain_message(self, message: discord.Message):
 
         # check if the last 4 messages in the channel are identical
@@ -343,7 +334,7 @@ class Sneaks():
             m = history.pop(0)
             if m.content != message.content or m.author == self.bot.user:
                 return
-            
+
         # stop him from spamming blank messages which seems to cause so many errors
         if message.content == "":
             return
@@ -352,14 +343,12 @@ class Sneaks():
         print(f'\033[1;35mSpamming \"{message.content}\"')
         await message.channel.send(content=message.content)
 
-
     async def reply_ping(self, message: discord.Message):
         if f"<@{self.bot.user.id}>" in message.content:
             emote_response = self.emotes[random.choice(
                 self.greeting_reactions)]
             print(f"\033[1;35mReplying to mention from {message.author}")
             await message.reply(content=emote_response * random.randint(1, 3))
-
 
     # prints every emote, mostly for testing but also probably funny
     async def emote_dump(self, message: discord.Message):
@@ -374,7 +363,6 @@ class Sneaks():
                 await message.reply(content=message_to_send)
                 message_to_send = ""
         await message.reply(content=message_to_send)
-
 
     # copies the most awarded posts from #art-battle to #announcements, on demand
     async def art_battle_recap(self, input: discord.Message):
@@ -445,7 +433,6 @@ class Sneaks():
             await announcements.send(content=content)
         print(f"\033[1;32mFinished art battle recap!")
 
-
     async def reaction_image(self, message: discord.Message):
         if random.randint(0, 700) != 0:
             return
@@ -456,7 +443,6 @@ class Sneaks():
         # send it to discord
         await message.reply(file=file, content="")
 
-
     async def brainrot_scan(self, message: discord.Message):
         # ignore bots (to prevent infinite "what the sigma" mutual recursion)
         if message.author.bot: return
@@ -466,7 +452,6 @@ class Sneaks():
         if capture:
             print(f"Brainrot \"{capture.group(0)}\" caught, by {message.author}")
             await message.reply(content="erm what the sigma")
-
 
     # https://www.azuracast.com/docs/developers/now-playing-data/
     # called at the start to loop forever, searching for nowplaying updates
@@ -493,7 +478,6 @@ class Sneaks():
             except Exception as e:
                 print(e)
 
-
     # post an embed into the designated channel
     async def post_nowplaying_update(self, song):
         # only update if users are in vc in the cafe server with the bot
@@ -510,10 +494,64 @@ class Sneaks():
         emb = self.get_nowplaying_embed(song)
         await channel.send(embed=emb)
 
-
     # takes song json from nowplaying api and returns the appropriate embed to represent it
     # called by websocket update and manually by users
     def get_nowplaying_embed(self, song):
         emb = discord.Embed(title="Now Playing", description=song["text"], color=discord.Color.blue()) # title and artist together
         emb.set_thumbnail(url=song["art"])
         return emb
+
+    def print_debug(self, log: str):
+        print(f"\033[1;34m[DEBUG] {log}\033[0m")
+
+    async def check_embed_fail(self, message: discord.Message):
+        self.print_debug(f"received message: {message.content}")
+        if message.embeds:
+            self.print_debug("embed found, no fail")
+            return
+        # you cant configure this because im lazy and tired and dgaf
+        embed_failable_domains = [
+            "x.com",
+            "twitter.com",
+            "fxtwitter.com",
+            "fixupx.com",
+            "instagram.com",
+            "kkinstagram.com",
+            "youtube.com",
+            "tenor.com",
+            "cdn.discordapp.com",
+            "media.discordapp.net",
+            "gif.fxtwitter.com",
+            "bsky.app",
+            "spotify.com",
+            "open.spotify.com",
+            "youtu.be",
+        ]
+        found_failable_domain = False
+        for domain in embed_failable_domains:
+            self.print_debug(f"checking domain {domain}")
+            regex = re.compile(r"https?:\/\/(www\.)?" + domain, re.IGNORECASE)
+            if not regex.search(message.content):
+                self.print_debug(f"{domain} not in message")
+                continue
+            self.print_debug(f"{domain} found in message")
+            found_failable_domain = True
+            break
+        if not found_failable_domain:
+            self.print_debug("embed fail not possible: no embeddable link found in message")
+            return
+
+        self.print_debug("embed failable link found, waiting for possible fail...")
+        await asyncio.sleep(5)  # lol
+
+        self.print_debug(f"rechecking message: {message.content}")
+        message = await message.channel.fetch_message(message.id)
+        if message.embeds:
+            self.print_debug("embed found, no fail")
+            return
+
+        print(f"Epic embed fail: {message.content}")
+        path = random.choice(glob.glob("assets/embedfailreactions/*"))
+        print(f"\033[1;35mSending image {path}")
+        file = discord.File(path)
+        await message.reply(file=file, content="")
